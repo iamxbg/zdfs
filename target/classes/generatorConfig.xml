@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN_" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+  <context id="mysqlTables">
+    <jdbcConnection connectionURL="localhost:3306/zdfs" 
+    				driverClass="com.mysql.jdbc.Driver" 
+    				password="test123" 
+    				userId="root" />
+    <javaModelGenerator targetPackage="zdfs.model" targetProject="\zdfs\src" />
+    <sqlMapGenerator targetPackage="zdfs.model" targetProject="\zdfs\src" />
+    <javaClientGenerator targetPackage="zdfs.dao" targetProject="\zdfs\src" type="XMLMAPPER" />
+    <table schema="zdfs" tableName="doctor_t">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+     
+    </table>
+  </context>
+</generatorConfiguration>
