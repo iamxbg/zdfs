@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN_" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
+	<properties resource="config.properties"/>
+	<classPathEntry location="D:\workspace\jee\zdfs\src\main\resources\mysql-connector-java-5.1.42.jar"/>
+ 	
+ 	
 
-  <context id="mysqlTables">
-    <jdbcConnection connectionURL="localhost:3306/zdfs" 
-    				driverClass="com.mysql.jdbc.Driver" 
-    				password="test123" 
-    				userId="root" />
-    <javaModelGenerator targetPackage="zdfs.model" targetProject="\zdfs\src" />
-    <sqlMapGenerator targetPackage="zdfs.model" targetProject="\zdfs\src" />
-    <javaClientGenerator targetPackage="zdfs.dao" targetProject="\zdfs\src" type="XMLMAPPER" />
-    <table schema="zdfs" tableName="doctor_t">
+  <context id="mysqlTables" >
+    <jdbcConnection connectionURL="${mybatis.generator.jdbcURL}" 
+    				driverClass="${mybatis.generator.jdbcDriver}" 
+    				password="${mybatis.generator.jdbcPassword}" 
+    				userId="${mybatis.generator.jdbcUserId}" />
+    	
+   		
+    
+    <javaModelGenerator targetPackage="zdfs.model" targetProject="src/main/java" />
+    <sqlMapGenerator targetPackage="zdfs.model" targetProject="src/main/java" />
+    <javaClientGenerator targetPackage="zdfs.dao" targetProject="src/main/java" type="XMLMAPPER" />
+   
+    <table schema="${mybatis.generator.schema}" tableName="doctor_t">
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
-     
+    </table>
+    <table schema="${mybatis.generator.schema}" tableName="appointment_t">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.schema}" tableName="department_t">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.schema}" tableName="diagnose_t">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.schema}" tableName="hospital_t">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.schema}" tableName="r_doctor_anychat_t">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
     </table>
   </context>
 </generatorConfiguration>
+

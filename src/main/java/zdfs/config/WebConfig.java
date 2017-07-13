@@ -25,6 +25,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		// TODO Auto-generated method stub
 		super.configureDefaultServletHandling(configurer);
 		configurer.enable();
+		
+	
 	}
 	
 	
