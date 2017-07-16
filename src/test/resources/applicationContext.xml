@@ -15,16 +15,40 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
 	
+
+	<!-- datasource -->
 	<bean id='dataSource' class="org.apache.commons.dbcp2.BasicDataSource"
-		p:password=""
+		p:password="test123"
 		p:username="root"
 		p:url="jdbc:mysql://localhost:3306/tf02_zdfs"
 		p:driverClassName="com.mysql.jdbc.Driver"
 	></bean>
 	
+	<!-- mybatis -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	  <property name="dataSource" ref="dataSource" />
-	  <property name="mapperLocations" value="classpath:zdfs/model/*.xml" />
 	</bean>
+	
+	<!-- reids  -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig" >  
+         <property name="maxIdle" value="5" />  
+         <property name="maxWaitMillis" value="3000" />  
+          
+   </bean >
+   
+	<bean id="jedisConnFactory" 
+    class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" 
+    p:use-pool="true"
+    p:poolConfig-ref="poolConfig"
+    p:hostName="192.168.1.103"
+    p:port="6379"
+    p:clientName=""
+    p:password=""
+    p:timeout="10000"/>
 
-</beans>
+
+	<bean id="redisTemplate" 
+	    class="org.springframework.data.redis.core.RedisTemplate" 
+	    p:connection-factory-ref="jedisConnFactory"/>
+	
+	</beans>

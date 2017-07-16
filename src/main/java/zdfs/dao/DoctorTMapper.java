@@ -93,4 +93,9 @@ public interface DoctorTMapper {
      * @mbg.generated Thu Jul 13 20:33:13 CST 2017
      */
     int updateByPrimaryKey(DoctorT record);
+    
+    
+    public List<DoctorT> selectByPatientId(@Param("patientId") int pid);
+    
+
 }
