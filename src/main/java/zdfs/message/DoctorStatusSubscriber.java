@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
@@ -22,9 +24,18 @@ public class DoctorStatusSubscriber implements IDoctorStatusSubscriber{
 	@Autowired
 	private PatientTMapper pMapper;
 	
+	private static Logger log=LogManager.getLogger();
 
 	@Override
-	public void handleLogin(int did) {
+	public void handleMessage(String message) {
+		// TODO Auto-generated method stub
+		log.info("doctorStatusMess:"+message);
+	}
+	
+
+	/*
+	@Override
+	public void handleLogin(String  message) {
 		// TODO Auto-generated method stub
 		
 		
@@ -66,11 +77,18 @@ public class DoctorStatusSubscriber implements IDoctorStatusSubscriber{
 	@Override
 	public void handleHeartbeat(int did) {
 		// TODO Auto-generated method stub
+		
+		log.info("hadle heartbeat*");
 		template.expire(DOCTOR_NAMESPACE+did, DOCTOR_NAMESPACE_EXPIRES_COUNT, TimeUnit.MICROSECONDS);
 	}
 	
 	@Override
 	public void handleExpireEvent(int did) {
+		
+		log.info("expire:event"+did);
+		
+
+		
 		List<PatientT> pList=pMapper.selectByDoctorId(did);
 		for(PatientT p:pList) {
 			String pKey=PATIENT_NAMESPACE+p.getId();
@@ -80,6 +98,6 @@ public class DoctorStatusSubscriber implements IDoctorStatusSubscriber{
 				setOprs.add(pKey, 0);
 			}
 		}
-	}
+	}*/
 
 }

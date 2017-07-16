@@ -15,7 +15,7 @@
    		
     
     <javaModelGenerator targetPackage="zdfs.model" targetProject="src/main/java" />
-    <sqlMapGenerator targetPackage="zdfs.model" targetProject="src/main/java" />
+    <sqlMapGenerator targetPackage="zdfs.dao" targetProject="src/main/java" />
     <javaClientGenerator targetPackage="zdfs.dao" targetProject="src/main/java" type="XMLMAPPER" />
    
     <table schema="${mybatis.generator.schema}" tableName="doctor_t">

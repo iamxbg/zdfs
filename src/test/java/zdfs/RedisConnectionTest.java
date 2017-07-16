@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,7 +22,8 @@ public class RedisConnectionTest {
 	private RedisOperations<String,String> oprs;
 	@Autowired
 	private RedisConnectionFactory connFactory;
-	
+	@Autowired
+	private RedisTemplate template;
 	
 	
 	@Test
@@ -37,6 +39,11 @@ public class RedisConnectionTest {
 	public void testConnNotNull() {
 		Assert.assertNotNull("Can't get Redis Connection!",connFactory.getConnection());
 		
+	}
+	
+	@Test
+	public void testAddMessage(){
+		template.opsForValue().append("myTest1", "testValue");
 	}
 	
 	

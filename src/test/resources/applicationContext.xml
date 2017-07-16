@@ -7,21 +7,40 @@
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
-		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+	xmlns:redis="http://www.springframework.org/schema/redis"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis-1.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
-	
+	<!-- 
+	<util:properties id='test'  location="classpath:config.properties"></util:properties>
+	 -->
+	 
+	 <context:component-scan base-package="zdfs"/>
+	 
+	 <bean id='propertyConfigurer' class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	 	<property name="locations">
+	 		<list>
+	 			<value >classpath:config.properties</value>
+	 		</list>
+	 	</property>
+	 </bean>
+	 
+	<!-- mybatis -->
+	<mybatis-spring:scan base-package="zdfs.dao"/>
 
 	<!-- datasource -->
 	<bean id='dataSource' class="org.apache.commons.dbcp2.BasicDataSource"
-		p:password="test123"
-		p:username="root"
-		p:url="jdbc:mysql://localhost:3306/tf02_zdfs"
-		p:driverClassName="com.mysql.jdbc.Driver"
+		p:password="${jdbc.password}"
+		p:username="${jdbc.username}"
+		p:url="${jdbc.url}"
+		p:driverClassName="${jdbc.driver}"
 	></bean>
 	
 	<!-- mybatis -->
@@ -30,25 +49,27 @@
 	</bean>
 	
 	<!-- reids  -->
-	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig" >  
-         <property name="maxIdle" value="5" />  
-         <property name="maxWaitMillis" value="3000" />  
-          
-   </bean >
-   
 	<bean id="jedisConnFactory" 
     class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" 
     p:use-pool="true"
-    p:poolConfig-ref="poolConfig"
-    p:hostName="192.168.1.103"
-    p:port="6379"
-    p:clientName=""
-    p:password=""
-    p:timeout="10000"/>
+    p:hostName="${redis.hostname}"
+    p:port="${redis.port}"
+    p:clientName="${redis.clientName}"
+    p:password="${redis.password}"
+    p:timeout="${redis.timeout}"/>
 
+	<bean id='stringRedisSerializer' class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 
 	<bean id="redisTemplate" 
 	    class="org.springframework.data.redis.core.RedisTemplate" 
-	    p:connection-factory-ref="jedisConnFactory"/>
+	    p:connection-factory-ref="jedisConnFactory"
+	    p:defaultSerializer-ref="stringRedisSerializer"/>
+	
+	<bean id='doctorListener' class="zdfs.message.DoctorStatusSubscriber"/>
+
+	<redis:listener-container connection-factory="jedisConnFactory" >
+		<redis:listener ref="doctorListener"  topic="*" serializer="stringRedisSerializer"/>
+	</redis:listener-container>
+	
 	
 	</beans>

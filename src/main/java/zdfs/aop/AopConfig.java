@@ -12,19 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Aspect
 public class AopConfig {
 
-	private static Logger logger=LogManager.getLogger();
 	
 	public AopConfig() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Pointcut("zdfs/**/*.*(**)")
-	public void everyMethod(){
-		
-	}
-	
-	@Before(value="everyMethod()")
-	public void logClassNameBeforeMethodExec(){
-			logger.error("method run!");
-	}
+
 }
