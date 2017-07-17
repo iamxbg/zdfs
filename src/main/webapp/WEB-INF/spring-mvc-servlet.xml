@@ -11,6 +11,14 @@
 	<mvc:annotation-driven  />
 	<context:component-scan base-package="zdfs.web" />
 	
-	
-	
+	<!-- 
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="org.springframework.web.filter.CharacterEncodingFilter" p:forceEncoding="true" p:encoding="UTF-8"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	 -->
+	 
+	 
 </beans>

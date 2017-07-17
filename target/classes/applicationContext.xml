@@ -22,7 +22,7 @@
 	<util:properties id='test'  location="classpath:config.properties"></util:properties>
 	 -->
 	 
-	 <context:component-scan base-package="zdfs"/>
+	 <context:component-scan base-package="zdfs" annotation-config="true"/>
 	 
 	 <bean id='propertyConfigurer' class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 	 	<property name="locations">
@@ -33,7 +33,8 @@
 	 </bean>
 	 
 	<!-- mybatis -->
-	<mybatis-spring:scan base-package="zdfs.dao"/>
+	<mybatis-spring:scan base-package="zdfs.dao" factory-ref="sqlSessionFactory"/>
+	<mybatis-spring:scan base-package="zdfs.tf02.dao" factory-ref="tf02_sqlSessionFactory"/>
 
 	<!-- datasource -->
 	<bean id='dataSource' class="org.apache.commons.dbcp2.BasicDataSource"
@@ -43,15 +44,27 @@
 		p:driverClassName="${jdbc.driver}"
 	/>
 	
+	<bean id='tf02_dataSource' class="org.apache.commons.dbcp2.BasicDataSource"
+		p:password="${tf02.jdbc.password}"
+		p:username="${tf02.jdbc.username}"
+		p:url="${tf02.jdbc.url}"
+		p:driverClassName="${tf02.jdbc.driver}"
+	/>
+	
 	<!-- transaction manager -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
 		p:dataSource-ref="dataSource" />
 	
 	
+	<bean id="tf02_transactionalManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
+		p:dataSource-ref="tf02_dataSource"/>
+	
 	<!-- mybatis -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" 
 		p:dataSource-ref="dataSource" />
-	  
+	 
+	 <bean id='tf02_sqlSessionFactory'  class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="tf02_dataSource" />
+	 
 	
 	<!-- reids  -->
 	<bean id="jedisConnFactory" 

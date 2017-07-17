@@ -1,5 +1,7 @@
 package zdfs.service;
 
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,28 +9,72 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import zdfs.model.HospitalT;
+import zdfs.service.impl.HospitalService;
 
+@Ignore
 @ContextConfiguration(locations= {"classpath:applicationContext.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-public class HospitalServiceTest {
+public class HospitalServiceTest  implements ICRUDServiceTest{
 
 	@Autowired
-	private HospitalService hService;
+	private HospitalService service;
+
+	@Ignore
+	@Test
+	@Override
+	public void testAdd() {
+		// TODO Auto-generated method stub
+		String code="ZZSDSDSDSDS";
+		String name="浙江婦女兒童醫院";
+		String address="浙江那個當";
+		String tel="+76-443343242";
+		String decription="很nice的醫院";
+		HospitalT t=new HospitalT(code,name,address, tel, decription);
+		
+		service.add(t);
+	}
+
+	@Ignore
+	@Test
+	@Override
+	public void testDeleteById() {
+		// TODO Auto-generated method stub
+		int id=2;
+		service.deleteById(id);
+	}
+
+	@Ignore
+	@Test
+	@Override
+	public void testSelectById() {
+		// TODO Auto-generated method stub
+		int id=3;
+		HospitalT hospital =service.findById(id);
+		Assert.assertNotNull(hospital);
+	}
+
+	@Ignore
+	@Test
+	@Override
+	public void testSelectByExample() {
+		// TODO Auto-generated method stub
+		String name_1="浙江";
+		Assert.assertTrue(service.findByName(name_1).size()==2);
+		String name_2="廣東";
+		Assert.assertTrue(service.findByName(name_2).size()==0);
+	}
+
+	@Ignore
+	@Test
+	@Override
+	public void testUpdate() {
+		// TODO Auto-generated method stub
+		int id=3;
+		HospitalT hospital=service.findById(id);
+		hospital.setDecription("修改描述！");
+		service.update(hospital);
+	}
 
 	
-	@Test
-	public void testAddHospital() {
-		
-		String code="sdfsdfsdfsdfsdfsdf";
-		String name="浙江大学附属医院";
-		String address="浙江什么什么路多少多少号";
-		String tel="086+234234234";
-		String decription="没有什么好说的！";
-		HospitalT hos=new HospitalT(code, name, address, tel, decription);
-		
-		hService.add(hos);
-		
-		
-		
-	}
+
 }

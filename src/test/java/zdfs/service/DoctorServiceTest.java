@@ -1,7 +1,11 @@
 package zdfs.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,32 +17,72 @@ import zdfs.service.impl.DoctorService;
 
 @ContextConfiguration(locations= {"classpath:applicationContext.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-public class DoctorServiceTest {
+public class DoctorServiceTest  implements ICRUDServiceTest{
 
 	@Autowired
-	private DoctorService dService;
-	
-	
+	private DoctorService service;
+
+	@Ignore
 	@Test
-	public void testRegister() {
-		String name="诸葛孔明";
-		String pwd="hellode";
-		String mail="zgkm@163.com";
-		String tel="1870283792";
-		String photo="http://sdferw.cdsfs.sdfsdf&8x";
-		Date birthday=new Date();
-		int hospital_id=389;
-		int department_id=123;
-		int doctor_type_id=1;
-		String job="杂役";
-		String good_at="打杂";
-		boolean online_state=true;
-		boolean has_video=false;
+	@Override
+	public void testAdd() {
+		// TODO Auto-generated method stub
+		String name="李熾明"; 
+		String pwd="hemomomowerwer"; 
+		String mail="helloworld@126.com"; 
+		String tel="9090910";
+		String photo="http://fakeLocation.xmllsd"; 
+		Date birthday=null;
+		try {
+			birthday = new SimpleDateFormat("yyyy-MM-dd").parse("1989-03-12");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Integer hospital_id=6;
+		Integer department_id=1;
+		Integer doctor_type_id=17; 
+		String good_at="拔痰定喘";
+		Boolean online_state=false;
+		Boolean has_video=false;
+		DoctorT t=new DoctorT(name, pwd, mail, tel, photo, birthday, hospital_id, department_id, doctor_type_id, good_at, online_state, has_video);
 		
-		DoctorT doctor=new DoctorT(name, pwd, mail, tel, photo, birthday, hospital_id, department_id, doctor_type_id, good_at, online_state, has_video);
-		dService.register(doctor);
-		
-				
+		service.add(t);
 	}
+
+	@Override
+	public void testDeleteById() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void testSelectById() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Ignore
+	@Test
+	@Override
+	public void testSelectByExample() {
+		// TODO Auto-generated method stub
+		
+		String name="李";
+		Assert.assertTrue(service.findByNameLike(name).size()==2);
+	}
+
+	@Ignore
+	@Test
+	@Override
+	public void testUpdate() {
+		// TODO Auto-generated method stub
+		DoctorT t=service.findByNameLike("李白").get(0);
+			t.setGood_at("仗劍天涯");
+		service.update(t);
+	}
+	
+	
+
 	
 }

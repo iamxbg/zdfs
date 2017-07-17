@@ -3,6 +3,7 @@ package zdfs.web;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,16 +40,28 @@ public class DoctorController {
 	@Autowired
 	private DoctorService doctorService;
 	
-	@RequestMapping(path="/login")
-	public ResponseEntity login(@RequestParam("username") String username
-			,@RequestParam("password") String password){
+	@ResponseBody
+	@RequestMapping(path="/login",method=RequestMethod.POST)
+	public Map<String, Object> login(@RequestParam("tel") String tel
+			,@RequestParam("pwd") String pwd){
 		
-		log.info("username:"+username);
-		log.info("password:"+password);
+		log.info("username:"+tel);
+		log.info("password:"+pwd);
 		
+		List<DoctorT> dList= doctorService.findByTelAndPwd(tel, pwd);
 		
-		return null;
+		Map<String, Object> result=new HashMap<>();
+		if(dList.size()>0){
+			result.put("is_success", 1);
+			DoctorT doctor=dList.get(0);
+			doctor.setPwd(null);
+			result.put("doctor",doctor);
+		}else{
+			result.put("is_success", 0);
+		}
 		
+		return result;
+
 	}
 	
 	
@@ -103,6 +116,7 @@ public class DoctorController {
 	@RequestMapping(path="/listByDepartment",method=RequestMethod.POST)
 	@Consumes("application/json;charset=utf-8")
 	@Produces("application/json;charset=utf-8")
+	@Deprecated
 	public List<DoctorT> findByDepartment(@RequestParam("hid") int hid,@RequestParam("did") int did){
 		return null;
 		
@@ -113,39 +127,26 @@ public class DoctorController {
 	@RequestMapping(path="/changePwd/doctorId={doctorId}",method=RequestMethod.POST)
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json;charset=utf-8")
-	public Map<String, String> changePwd(@PathVariable("doctorId") int doctorId
-										,@RequestParam("code") String code
+	public Map<String, Object> changePwd(@PathVariable("doctorId") int doctorId
+										,@RequestParam(value="code",required=false) String code
 										,@RequestParam("pwd") String pwd) {
 		
 		
 		log.info("doctorId:"+doctorId+" code:"+code+" pwd:"+pwd);
 		
+		DoctorT doctor=doctorService.findById((int)doctorId);
+			
+			doctor.setPwd(pwd);
 		
+			doctorService.update(doctor);
 		
-		return null;
+		Map<String, Object> result=new HashMap<>();
+			result.put("is_success", 1);
+			
+		return result;
 	}
 	
-	/**
-	 * 
-	 */
-	@RequestMapping(path="/listPatents/doctorId={doctorId}",method=RequestMethod.POST,consumes= {"application/json"},produces= {"application/json"})
-	public ResponseEntity listPatients(@PathVariable("doctorId") int doctorId) {
-		log.info("doctorId:"+doctorId);
-		
-		
-		
-		return null;
-	}
-	
-	
-	
-	@RequestMapping(path="/findPatient",method=RequestMethod.POST,consumes= {"application/json"},produces= {"application/json"})
-	public ResponseEntity listStatusOfPatient(@PathVariable("pid") int pid) {
-		return null;
-	}
-	
-	
-	
+
 	@RequestMapping(path="/isExists?tel={tel}",method=RequestMethod.GET)
 	public ResponseEntity<Map<String,Object>> checkExists(@PathVariable("tel") int tel){
 		

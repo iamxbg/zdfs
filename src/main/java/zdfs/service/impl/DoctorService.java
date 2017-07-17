@@ -44,6 +44,26 @@ public class DoctorService implements IDoctorService {
 		return mapper.selectByPrimaryKey((int)id);
 	}
 
+	@Override
+	public List<DoctorT> findByNameLike(String name) {
+		// TODO Auto-generated method stub
+		DoctorTExample example=new DoctorTExample();
+			example.createCriteria().andNameLike("%"+name+"%");
+			example.setOrderByClause("id");
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<DoctorT> findByTelAndPwd(String tel, String pwd) {
+		// TODO Auto-generated method stub
+		DoctorTExample example=new DoctorTExample();
+			example.createCriteria().andTelEqualTo(tel)
+								.andDelflagEqualTo(false)
+								.andPwdEqualTo(pwd);
+			
+		return mapper.selectByExample(example);
+	}
+
 
 
 	

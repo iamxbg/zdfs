@@ -49,6 +49,39 @@ public class PatientService implements IPatientService {
 	}
 
 
+	@Override
+	public List<PatientT> findByDoctorId(int doctorId) {
+		// TODO Auto-generated method stub
+		PatientTExample example=new PatientTExample();
+			example.createCriteria().andD_idEqualTo(doctorId)
+									.andDelflagEqualTo(false);
+			example.setOrderByClause("p_id");
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<PatientT> findByDoctorIdAndNameLike(int doctorId, String nameLike) {
+		// TODO Auto-generated method stub
+		PatientTExample example=new PatientTExample();
+			example.createCriteria().andD_idEqualTo(doctorId)
+									.andP_nameLike("%"+nameLike+"%")
+									.andDelflagEqualTo(false);
+			example.setOrderByClause("p_id");
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<PatientT> findByZH_shebaohao(int doctorId, String ZH_shebaohao) {
+		// TODO Auto-generated method stub
+		PatientTExample example=new PatientTExample();
+			example.createCriteria().andD_idEqualTo(doctorId)
+					.andDelflagEqualTo(false);
+			
+			example.setOrderByClause("p_id");
+		return mapper.selectByExample(example);
+	}
+
+
 
 
 

@@ -15,7 +15,7 @@ import zdfs.service.IDiagnoseService;
 
 @Service
 @Transactional
-public class DiagnoseTService implements IDiagnoseService {
+public class DiagnoseService implements IDiagnoseService {
 	
 	@Autowired
 	private DiagnoseTMapper mapper;

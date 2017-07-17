@@ -43,6 +43,31 @@ public class DepartmentService implements IDepartmentService {
 		return mapper.selectByPrimaryKey((int)id);
 	}
 
+	@Override
+	public List<DepartmentT> findByNameLike(String name) {
+		// TODO Auto-generated method stub
+		DepartmentTExample example=new DepartmentTExample();
+			example.createCriteria().andNameLike("%"+name+"%");
+			example.setOrderByClause("id");
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<DepartmentT> findByCode(String code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DepartmentT> findByHospitalId(int hospitalId) {
+		// TODO Auto-generated method stub
+		DepartmentTExample example=new DepartmentTExample();
+			example.createCriteria().andHos_idEqualTo(hospitalId)
+									.andDelflagEqualTo(false);
+			example.setOrderByClause("id");
+		return mapper.selectByExample(example);
+	}
+
 
 
 	

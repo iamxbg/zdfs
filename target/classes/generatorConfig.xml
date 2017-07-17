@@ -5,14 +5,12 @@
 	<classPathEntry location="src\main\resources\mysql-connector-java-5.1.42.jar"/>
  	
  	
-
-  <context id="mysqlTables" >
+<!-- 
+  <context id="zdfs_tables" >
     <jdbcConnection connectionURL="${mybatis.generator.jdbcURL}" 
     				driverClass="${mybatis.generator.jdbcDriver}" 
     				password="${mybatis.generator.jdbcPassword}" 
     				userId="${mybatis.generator.jdbcUserId}" />
-    	
-   		
     
     <javaModelGenerator targetPackage="zdfs.model" targetProject="src/main/java" />
     <sqlMapGenerator targetPackage="zdfs.dao" targetProject="src/main/java" />
@@ -58,6 +56,44 @@
     	<generatedKey column="ID" sqlStatement="mysql" identity="true"/>
 	</table>
 
+  </context>
+   -->
+   
+  <context id="tf02_tables">
+  	<jdbcConnection connectionURL="${mybatis.generator.tf02.jdbcURL}" 
+    				driverClass="${mybatis.generator.tf02.jdbcDriver}" 
+    				password="${mybatis.generator.tf02.jdbcPassword}" 
+    				userId="${mybatis.generator.tf02.jdbcUserId}" />
+    
+    <javaModelGenerator targetPackage="zdfs.tf02.model" targetProject="src/main/java" />
+    <sqlMapGenerator targetPackage="zdfs.tf02.dao" targetProject="src/main/java" />
+    <javaClientGenerator targetPackage="zdfs.tf02.dao" targetProject="src/main/java" type="XMLMAPPER" />
+    
+    <table schema="${mybatis.generator.tf02.schema}" tableName="bp_data">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.tf02.schema}" tableName="bf_data">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.tf02.schema}" tableName="ecg_data">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.tf02.schema}" tableName="glu_data">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.tf02.schema}" tableName="rspo2_data">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    <table schema="${mybatis.generator.tf02.schema}" tableName="members_info">
+      <property name="useActualColumnNames" value='true'/>
+      <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
+    </table>
+    
     
   </context>
 </generatorConfiguration>

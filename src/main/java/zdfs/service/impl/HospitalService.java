@@ -49,6 +49,17 @@ public class HospitalService implements IHospitalService {
 		return mapper.selectByPrimaryKey((int)id);
 	}
 
+	@Override
+	public List<HospitalT> findByName(String name) {
+		// TODO Auto-generated method stub
+		HospitalTExample exmpale=new HospitalTExample();
+			exmpale.createCriteria().andNameLike("%"+name+"%");
+			exmpale.setOrderByClause("id");
+		return mapper.selectByExample(exmpale);
+	}
+
+	
+	
 
 
 

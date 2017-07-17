@@ -1,2 +1,13 @@
-C:\Users\wilson\git\zdfs\src\test\java\zdfs\RedisConnectionTest.java
-C:\Users\wilson\git\zdfs\src\test\java\zdfs\DataSourceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\MetaDoctorTypeServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\message\DoctorMessagePubTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\DepartmentServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\MetaDepartmentTypeServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\HospitalServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\DataSourceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\ICRUDServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\AppointmentServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\PatientServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\DoctorServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\web\DoctorControllerTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\service\DiagnoseServiceTest.java
+C:\Users\C3406498\git\zdfs\src\test\java\zdfs\RedisConnectionTest.java
