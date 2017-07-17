@@ -1,13 +1,18 @@
 package zdfs.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import zdfs.model.DiagnoseT;
 import zdfs.model.DoctorT;
+import zdfs.service.IDoctorService;
+import zdfs.service.impl.DoctorService;
 
 
 @Controller
@@ -28,6 +35,9 @@ public class DoctorController {
 	
 	private static Logger log=LogManager.getLogger();
 
+	
+	@Autowired
+	private DoctorService doctorService;
 	
 	@RequestMapping(path="/login")
 	public ResponseEntity login(@RequestParam("username") String username
@@ -42,23 +52,51 @@ public class DoctorController {
 	}
 	
 	
+	@ResponseBody
 	@RequestMapping(path="/register",method=RequestMethod.POST)
-	public ResponseEntity register(@RequestParam("tel") int tel
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces("application/json;charset=utf-8")
+	public DoctorT register(@RequestParam("tel") String tel
 								,@RequestParam("code") String code
 								,@RequestParam("pwd") String pwd
-								,@RequestParam("email") String email
+								,@RequestParam("mail") String mail
 			,@RequestParam("name") String name
-			,@RequestParam("birthday") String birthday
-			,@RequestParam("hospital") String hospital
-			,@RequestParam("department") String department
-			,@RequestParam("job") String job
+			,@RequestParam("birthday") String birthday_str
+			,@RequestParam("hospital_id") Integer hospital_id
+			,@RequestParam("department_id") Integer department_id
+			,@RequestParam("doctor_type_id") Integer doctor_type_id
 			,@RequestParam("good_at") String good_at
 			){	
 		
 		// validate if message is complete.
 		log.info("@register");
 		
-		return null;
+		String photo="http://fakePhotoURL";
+		boolean online_state=true;
+		boolean has_video=false;
+		/*
+		String name, String pwd, String mail, String tel, String photo, Date birthday, Integer hospital_id,
+		Integer department_id, Integer doctor_type_id, String good_at, Boolean online_state, Boolean has_video
+		*/
+		Date birthday=null;
+		try {
+			birthday = new SimpleDateFormat("yyyy-MM-dd").parse(birthday_str);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		DoctorT doctor=new DoctorT(name, pwd, mail, tel, photo, birthday, hospital_id, department_id, doctor_type_id, good_at, online_state, has_video);
+		
+		int id=(int)doctorService.add(doctor);
+		
+		log.info("generatedId:"+id);
+		
+		doctor.setPwd(null);
+		//doctor.setId(id);
+		
+		
+		return doctor;
 	}
 	
 	@ResponseBody
@@ -71,10 +109,18 @@ public class DoctorController {
 	}
 	
 	
-	@RequestMapping(path="/changePwd",method=RequestMethod.POST)
+	@ResponseBody
+	@RequestMapping(path="/changePwd/doctorId={doctorId}",method=RequestMethod.POST)
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json;charset=utf-8")
-	public ResponseEntity changePwd(@RequestParam("code") String code,@RequestParam("pwd") String pwd) {
+	public Map<String, String> changePwd(@PathVariable("doctorId") int doctorId
+										,@RequestParam("code") String code
+										,@RequestParam("pwd") String pwd) {
+		
+		
+		log.info("doctorId:"+doctorId+" code:"+code+" pwd:"+pwd);
+		
+		
 		
 		return null;
 	}
