@@ -1,5 +1,6 @@
-package zdfs.service;
+package zdfs.service.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,41 +10,48 @@ import org.springframework.transaction.annotation.Transactional;
 import zdfs.dao.HospitalTMapper;
 import zdfs.model.HospitalT;
 import zdfs.model.HospitalTExample;
+import zdfs.service.IHospitalService;
 
 @Service
 @Transactional
 public class HospitalService implements IHospitalService {
 	
 	@Autowired
-	private HospitalTMapper hMapper;
+	private HospitalTMapper mapper;
 
-	@Override
-	public int add(HospitalT t) {
-		// TODO Auto-generated method stub
-		return hMapper.insert(t);
+	
+	
+	public HospitalService() {
+		super();
 	}
 
 	@Override
-	public int deleteById(int id) {
+	public Serializable add(HospitalT t) {
 		// TODO Auto-generated method stub
-		 return hMapper.deleteByPrimaryKey(id);
+		return mapper.insert(t);
+	}
+
+	@Override
+	public int deleteById(Serializable id) {
+		// TODO Auto-generated method stub
+		return mapper.deleteByPrimaryKey((int)id);
 	}
 
 	@Override
 	public int update(HospitalT t) {
 		// TODO Auto-generated method stub
-		return hMapper.updateByPrimaryKey(t);
-	}
-
-	public List<HospitalT> findByExample(HospitalTExample t) {
-		// TODO Auto-generated method stub
-		return hMapper.selectByExample(t);
+		return mapper.updateByPrimaryKey(t);
 	}
 
 	@Override
-	public HospitalT findById(int id) {
+	public HospitalT findById(Serializable id) {
 		// TODO Auto-generated method stub
-		return hMapper.selectByPrimaryKey(id);
+		return mapper.selectByPrimaryKey((int)id);
 	}
+
+
+
+
+
 
 }

@@ -1,5 +1,12 @@
 package zdfs.service;
 
-public interface IAppointmentService {
+import java.util.Date;
+import java.util.List;
+
+import zdfs.model.AppointmentT;
+import zdfs.model.AppointmentTExample;
+
+public interface IAppointmentService extends CRUDService<AppointmentT>{
+
 
 }

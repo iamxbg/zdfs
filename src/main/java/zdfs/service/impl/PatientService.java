@@ -8,20 +8,24 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import zdfs.dao.DoctorTMapper;
-import zdfs.model.DoctorT;
-import zdfs.model.DoctorTExample;
-import zdfs.service.IDoctorService;
+import zdfs.dao.PatientTMapper;
+import zdfs.model.PatientT;
+import zdfs.model.PatientTExample;
+import zdfs.service.IPatientService;
 
 @Service
 @Transactional
-public class DoctorService implements IDoctorService {
+public class PatientService implements IPatientService {
 
 	@Autowired
-	private DoctorTMapper mapper;
+	private PatientTMapper mapper;
+	
+	public PatientService() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
-	public Serializable add(DoctorT t) {
+	public Serializable add(PatientT t) {
 		// TODO Auto-generated method stub
 		return mapper.insert(t);
 	}
@@ -33,20 +37,19 @@ public class DoctorService implements IDoctorService {
 	}
 
 	@Override
-	public int update(DoctorT t) {
+	public int update(PatientT t) {
 		// TODO Auto-generated method stub
 		return mapper.updateByPrimaryKey(t);
 	}
 
 	@Override
-	public DoctorT findById(Serializable id) {
+	public PatientT findById(Serializable id) {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey((int)id);
 	}
 
 
 
-	
 
 
 }

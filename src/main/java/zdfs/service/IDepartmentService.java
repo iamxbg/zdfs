@@ -7,6 +7,5 @@ import zdfs.model.DepartmentTExample;
 
 public interface IDepartmentService extends CRUDService<DepartmentT>{
 
-	
-	List<DepartmentT> findByExample(DepartmentTExample example);
+
 }

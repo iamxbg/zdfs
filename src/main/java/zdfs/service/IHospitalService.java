@@ -7,6 +7,5 @@ import zdfs.model.HospitalTExample;
 
 public interface IHospitalService extends CRUDService<HospitalT>{
 	
-	
-	List<HospitalT> findByExample(HospitalTExample example);
+
 }

@@ -1,5 +1,6 @@
-package zdfs.service;
+package zdfs.service.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,42 +10,42 @@ import org.springframework.transaction.annotation.Transactional;
 import zdfs.dao.DepartmentTMapper;
 import zdfs.model.DepartmentT;
 import zdfs.model.DepartmentTExample;
+import zdfs.service.IDepartmentService;
 
 @Service
 @Transactional
 public class DepartmentService implements IDepartmentService {
 
 	@Autowired
-	private DepartmentTMapper dMapper;
-	
+	private DepartmentTMapper mapper;
+
 	@Override
-	public int add(DepartmentT t) {
+	public Serializable add(DepartmentT t) {
 		// TODO Auto-generated method stub
-		return dMapper.insert(t);
+		return mapper.insert(t);
 	}
 
 	@Override
-	public int deleteById(int id) {
+	public int deleteById(Serializable id) {
 		// TODO Auto-generated method stub
-		return dMapper.deleteByPrimaryKey(id);
+		return mapper.deleteByPrimaryKey((int)id);
 	}
 
 	@Override
 	public int update(DepartmentT t) {
 		// TODO Auto-generated method stub
-		return dMapper.updateByPrimaryKey(t);
+		return mapper.updateByPrimaryKey(t);
 	}
 
 	@Override
-	public DepartmentT findById(int id) {
+	public DepartmentT findById(Serializable id) {
 		// TODO Auto-generated method stub
-		return dMapper.selectByPrimaryKey(id);
+		return mapper.selectByPrimaryKey((int)id);
 	}
 
-	@Override
-	public List<DepartmentT> findByExample(DepartmentTExample example) {
-		// TODO Auto-generated method stub
-		return dMapper.selectByExample(example);
-	}
+
+
+	
+
 
 }

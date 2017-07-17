@@ -1,5 +1,13 @@
 package zdfs.service;
 
-public interface IPatientService {
+import java.util.List;
 
+import zdfs.model.PatientT;
+import zdfs.model.PatientTExample;
+
+public interface IPatientService extends CRUDService<PatientT>{
+
+
+	
+	
 }

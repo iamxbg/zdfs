@@ -1,14 +1,16 @@
 package zdfs.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 public interface CRUDService<T> {
 	
-	public int add(T t);
+	public Serializable add(T t);
 	
-	public int deleteById(int id);
+	public int deleteById(Serializable id);
 	
 	public int update(T t);
 	
-	public T findById(int id);
+	public T findById(Serializable id);
+
 }

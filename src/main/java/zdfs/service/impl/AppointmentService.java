@@ -1,6 +1,7 @@
 package zdfs.service.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,20 +9,24 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import zdfs.dao.DoctorTMapper;
-import zdfs.model.DoctorT;
-import zdfs.model.DoctorTExample;
-import zdfs.service.IDoctorService;
+import zdfs.dao.AppointmentTMapper;
+import zdfs.model.AppointmentT;
+import zdfs.model.AppointmentTExample;
+import zdfs.service.IAppointmentService;
 
 @Service
 @Transactional
-public class DoctorService implements IDoctorService {
+public class AppointmentService implements IAppointmentService {
 
 	@Autowired
-	private DoctorTMapper mapper;
+	private AppointmentTMapper mapper;
+	
+	public AppointmentService() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
-	public Serializable add(DoctorT t) {
+	public Serializable add(AppointmentT t) {
 		// TODO Auto-generated method stub
 		return mapper.insert(t);
 	}
@@ -29,24 +34,22 @@ public class DoctorService implements IDoctorService {
 	@Override
 	public int deleteById(Serializable id) {
 		// TODO Auto-generated method stub
-		return mapper.deleteByPrimaryKey((int)id);
+		return mapper.deleteByPrimaryKey((long)id);
 	}
 
 	@Override
-	public int update(DoctorT t) {
+	public int update(AppointmentT t) {
 		// TODO Auto-generated method stub
 		return mapper.updateByPrimaryKey(t);
 	}
 
 	@Override
-	public DoctorT findById(Serializable id) {
+	public AppointmentT findById(Serializable id) {
 		// TODO Auto-generated method stub
-		return mapper.selectByPrimaryKey((int)id);
+		return mapper.selectByPrimaryKey((long)id);
 	}
 
 
-
-	
 
 
 }
