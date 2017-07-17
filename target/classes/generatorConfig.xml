@@ -47,14 +47,17 @@
     	<property name="useActualColumnNames" value="true"/>
     	<generatedKey column="ID" sqlStatement="mysql" identity="true"/>
     </table>
-    
-    <table schema="${mybatis.generator.schema}" tableName="r_doctor_patients_t">
-    	<property name="useActualColumnNames" value="true"/>
-    </table>
-    
-    <table schema="${mybatis.generator.schema}" tableName="r_patient_doctors_t">
-    	<property name="useActualColumnNames" value="true"/>
-    </table>
+
+	<table schema="${mybatis.generator.schema}" tableName="meta_department_type_t">
+		<property name="useActualColumnNames" value="true"/>
+    	<generatedKey column="ID" sqlStatement="mysql" identity="true"/>
+	</table>
+	
+	<table schema="${mybatis.generator.schema}" tableName="meta_doctor_type_t">
+		<property name="useActualColumnNames" value="true"/>
+    	<generatedKey column="ID" sqlStatement="mysql" identity="true"/>
+	</table>
+
     
   </context>
 </generatorConfiguration>

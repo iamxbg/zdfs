@@ -27,7 +27,6 @@ import zdfs.model.DoctorT;
 public class DoctorController {
 	
 	private static Logger log=LogManager.getLogger();
-	
 
 	
 	@RequestMapping(path="/login")
@@ -80,8 +79,15 @@ public class DoctorController {
 		return null;
 	}
 	
-	@RequestMapping(path="/listPatents",method=RequestMethod.POST,consumes= {"application/json"},produces= {"application/json"})
-	public ResponseEntity listPatients(@PathVariable("did") int did,@PathVariable("page") int page) {
+	/**
+	 * 
+	 */
+	@RequestMapping(path="/listPatents/doctorId={doctorId}",method=RequestMethod.POST,consumes= {"application/json"},produces= {"application/json"})
+	public ResponseEntity listPatients(@PathVariable("doctorId") int doctorId) {
+		log.info("doctorId:"+doctorId);
+		
+		
+		
 		return null;
 	}
 	

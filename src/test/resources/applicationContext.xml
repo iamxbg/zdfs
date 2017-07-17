@@ -41,12 +41,17 @@
 		p:username="${jdbc.username}"
 		p:url="${jdbc.url}"
 		p:driverClassName="${jdbc.driver}"
-	></bean>
+	/>
+	
+	<!-- transaction manager -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
+		p:dataSource-ref="dataSource" />
+	
 	
 	<!-- mybatis -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-	  <property name="dataSource" ref="dataSource" />
-	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" 
+		p:dataSource-ref="dataSource" />
+	  
 	
 	<!-- reids  -->
 	<bean id="jedisConnFactory" 
@@ -58,18 +63,17 @@
     p:password="${redis.password}"
     p:timeout="${redis.timeout}"/>
 
-	<bean id='stringRedisSerializer' class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 
 	<bean id="redisTemplate" 
 	    class="org.springframework.data.redis.core.RedisTemplate" 
-	    p:connection-factory-ref="jedisConnFactory"
-	    p:defaultSerializer-ref="stringRedisSerializer"/>
+	    p:connection-factory-ref="jedisConnFactory"/>
 	
+	<bean id='stringRedisSerializer' class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+	<!-- redis message listener container -->
 	<bean id='doctorListener' class="zdfs.message.DoctorStatusSubscriber"/>
 
 	<redis:listener-container connection-factory="jedisConnFactory" >
 		<redis:listener ref="doctorListener"  topic="*" serializer="stringRedisSerializer"/>
 	</redis:listener-container>
-	
 	
 	</beans>
