@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,16 +39,47 @@ public class PatientController {
 
 	
 	@ResponseBody
-	@RequestMapping(path="/findByDoctorId/doctorId={doctorId}",method=RequestMethod.GET)
+	@RequestMapping(path="/findByDoctorId/{doctorId}",method=RequestMethod.GET)
 	public List<PatientT> findByDoctorId(@PathVariable("doctorId") int doctorId) {
-		
-		log.info("doctorId:"+doctorId);
 
 		return pService.findByDoctorId(doctorId);
+	
+	}
+	
+	@ResponseBody
+	@RequestMapping(path="/create")
+	public Map<String, Object> create(@RequestBody PatientT patient){
+		pService.add(patient);
+		Map<String,Object> resultMap=new HashMap<>();
+		resultMap.put("is_success", 1);
+		resultMap.put("patient", patient);
 		
-
+		return resultMap;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(path="/getProfileByMemberId/{memberId}",method=RequestMethod.GET)
+	public Map<String, Object> findPatientProfileByMemberId(@PathVariable("memberId") int memberId){
+		MembersInfo mi=miService.findByMemberId(memberId);
+		Map<String, Object> resultMap=new HashMap<>();
+			
+		if(mi!=null){
+			
+			int age=AgeUtil.computeAgeByBirthday(mi.getBirthday());
+			PatientT patient=new PatientT(mi.getMembersname(), mi.getSex(), age, mi.getId(), 0);
+			resultMap.put("is_success", 1);
+			resultMap.put("patient", patient);
+		}else{
+			resultMap.put("is_success", 0);
+			resultMap.put("reason", "Not Found!");
+		}
+		return resultMap;
 	}
 
+	
+
+	@Deprecated
 	@ResponseBody
 	@RequestMapping("/searchByName/doctorId={doctorId}&type={type}&message={message}")
 	public List<PatientT> searchByMessage(@PathVariable("doctorId") int doctorId,@PathVariable("type") String type,@PathVariable("message") Object message){
@@ -60,25 +92,5 @@ public class PatientController {
 		
 	}
 	
-	@ResponseBody
-	@RequestMapping(path="/importPatientInfo/memberId={memberId}&doctorId={doctorId}",method=RequestMethod.GET)
-	public Map<String, Object> importPatientInfoByMemberId(@PathVariable("memberId") int memberId,@PathVariable("doctorId") int doctorId){
-		MembersInfo mi=miService.findByMemberId(memberId);
-		
-		
-		Map<String, Object> result=new HashMap<>();
-		
-		if(mi!=null){
-			int age=AgeUtil.computeAgeByBirthday(mi.getBirthday());
-			PatientT p=new PatientT(mi.getMembersname(), mi.getSex(), age, memberId, doctorId);
-			pService.add(p);
-			result.put("is_success", 1);
-			result.put("patient", p);
-		}else{
-			result.put("is_success", 0);
-			result.put("reason", "membersInfo not exists!");
-		}
-		
-		return result;
-	}
+
 }

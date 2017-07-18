@@ -58,6 +58,15 @@ public class HospitalService implements IHospitalService {
 		return mapper.selectByExample(exmpale);
 	}
 
+	@Override
+	public List<HospitalT> findAll() {
+		// TODO Auto-generated method stub
+		HospitalTExample example=new HospitalTExample();
+			example.createCriteria().andDelflagEqualTo(false);
+			example.setOrderByClause("id");
+		return mapper.selectByExample(example);
+	}
+
 	
 	
 

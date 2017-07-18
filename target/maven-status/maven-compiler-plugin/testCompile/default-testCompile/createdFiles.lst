@@ -1,0 +1,13 @@
+zdfs\service\MetaDoctorTypeServiceTest.class
+zdfs\service\MetaDepartmentTypeServiceTest.class
+zdfs\service\PatientServiceTest.class
+zdfs\service\DepartmentServiceTest.class
+zdfs\service\DoctorServiceTest.class
+zdfs\service\AppointmentServiceTest.class
+zdfs\service\DiagnoseServiceTest.class
+zdfs\RedisConnectionTest.class
+zdfs\message\DoctorMessagePubTest.class
+zdfs\service\ICRUDServiceTest.class
+zdfs\web\DoctorControllerTest.class
+zdfs\DataSourceTest.class
+zdfs\service\HospitalServiceTest.class

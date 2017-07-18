@@ -10,4 +10,9 @@ public interface IDoctorService extends CRUDService<DoctorT>{
 	public List<DoctorT> findByNameLike(String name);
 	
 	public List<DoctorT> findByTelAndPwd(String tel,String pwd);
+	
+	public List<DoctorT> findByHospitalId(int hospitalId);
+	
+	public List<DoctorT> findByHospitalIdAndDepartmentId(int hospitalId,int departmentId);
+	
 }

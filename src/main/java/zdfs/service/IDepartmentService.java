@@ -13,4 +13,6 @@ public interface IDepartmentService extends CRUDService<DepartmentT>{
 	public List<DepartmentT> findByCode(String code);
 	
 	public List<DepartmentT> findByHospitalId(int hospitalId);
+	
+	public List<DepartmentT> findByDepartmentType(int hospitalId,int departmentTypeId);
 }

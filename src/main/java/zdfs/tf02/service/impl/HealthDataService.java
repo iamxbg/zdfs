@@ -43,6 +43,7 @@ public class HealthDataService implements IHealthDataService {
 	@Autowired
 	private Rspo2DataMapper rspo2Mapper;
 
+	
 	@Override
 	public List<GluData> findGluDataByDateRange(int memberId, Date startDate, Date endDate) {
 		// TODO Auto-generated method stub
@@ -52,6 +53,7 @@ public class HealthDataService implements IHealthDataService {
 			example.setOrderByClause("createtime");
 		return gluMapper.selectByExample(example);
 	}
+	
 
 	@Override
 	public List<EcgData> findEcgDataByDateRange(int memberId, Date startDate, Date endDate) {

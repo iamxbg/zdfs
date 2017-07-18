@@ -68,6 +68,17 @@ public class DepartmentService implements IDepartmentService {
 		return mapper.selectByExample(example);
 	}
 
+	@Override
+	public List<DepartmentT> findByDepartmentType(int hospitalId, int departmentTypeId) {
+		// TODO Auto-generated method stub
+		DepartmentTExample example=new DepartmentTExample();
+			example.createCriteria().andHos_idEqualTo(hospitalId)
+									.andDelflagEqualTo(false)
+									.andDepartment_type_idEqualTo(departmentTypeId);
+			example.setOrderByClause("id");
+		return mapper.selectByExample(example);
+	}
+
 
 
 	

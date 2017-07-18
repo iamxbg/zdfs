@@ -30,7 +30,7 @@ import zdfs.service.IDoctorService;
 import zdfs.service.impl.DoctorService;
 
 
-@Controller
+@RestController
 @RequestMapping(path="/doctor")
 public class DoctorController {
 	
@@ -41,6 +41,7 @@ public class DoctorController {
 	private DoctorService doctorService;
 	
 	@ResponseBody
+	@Consumes("applicaton/x-www-form-urlencoded")
 	@RequestMapping(path="/login",method=RequestMethod.POST)
 	public Map<String, Object> login(@RequestParam("tel") String tel
 			,@RequestParam("pwd") String pwd){
@@ -64,13 +65,35 @@ public class DoctorController {
 
 	}
 	
+	@ResponseBody
+	@RequestMapping(path="/update",method=RequestMethod.POST)
+	@Consumes("application/json;charset=utf-8")
+	@Produces("application/json;charset=utf-8")
+	public Map<String, Object> update(@RequestBody DoctorT doctor){
+		
+		DoctorT old=doctorService.findById(doctor.getId());
+		Map<String,Object> resultMap=new HashMap<>();
+		if(old!=null){
+			doctor.setPwd(old.getPwd());
+			doctorService.update(doctor);
+			
+				resultMap.put("is_success", 1);
+				doctor.setPwd(null);
+				resultMap.put("doctor", doctor);
+		}else{
+			resultMap.put("is_success", 0);
+			resultMap.put("reason", "can't find doctor by ID!");
+		}
+		
+			
+		return resultMap;
+	}
 	
 	@ResponseBody
 	@RequestMapping(path="/register",method=RequestMethod.POST)
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json;charset=utf-8")
-	public DoctorT register(@RequestParam("tel") String tel
-								,@RequestParam("code") String code
+	public Map<String, Object> register(@RequestParam("tel") String tel
 								,@RequestParam("pwd") String pwd
 								,@RequestParam("mail") String mail
 			,@RequestParam("name") String name
@@ -106,22 +129,14 @@ public class DoctorController {
 		log.info("generatedId:"+id);
 		
 		doctor.setPwd(null);
-		//doctor.setId(id);
+
+		Map<String, Object> resultMap=new HashMap<>();
+			resultMap.put("is_success", 1);
+			resultMap.put("doctor", doctor);
 		
 		
-		return doctor;
+		return resultMap;
 	}
-	
-	@ResponseBody
-	@RequestMapping(path="/listByDepartment",method=RequestMethod.POST)
-	@Consumes("application/json;charset=utf-8")
-	@Produces("application/json;charset=utf-8")
-	@Deprecated
-	public List<DoctorT> findByDepartment(@RequestParam("hid") int hid,@RequestParam("did") int did){
-		return null;
-		
-	}
-	
 	
 	@ResponseBody
 	@RequestMapping(path="/changePwd/doctorId={doctorId}",method=RequestMethod.POST)
@@ -153,41 +168,18 @@ public class DoctorController {
 		return null;
 	}
 	
-	
-	@RequestMapping(path="/changeProfile?did={did}")
-	public ResponseEntity<Map<String, Object>> changeProfile(@PathVariable("did") int did){
-		return null;
+	@ResponseBody
+	@RequestMapping(path="/findByHospitalId/{hospitalId}",method=RequestMethod.GET)
+	public List<DoctorT> findByHospitalId(@PathVariable("hospitalId") int hospitalId){
+		return doctorService.findByHospitalId(hospitalId);
 	}
 	
-	@RequestMapping(path="/addPatient?did={did}&pid={pid}")
-	public ResponseEntity<Map<String, String>> addPatient(@PathVariable("did") int did,@PathVariable("pid") int pid){
-		return null;
+	@ResponseBody
+	@RequestMapping(path="/find/hospitalId={hospitalId}&departmentId={departmentId}",method=RequestMethod.GET)
+	public List<DoctorT> findByHospitalAndDepartment(@PathVariable("hospitalId") int hospitalId,@PathVariable("departmentId") int departmentId){
+		return doctorService.findByHospitalIdAndDepartmentId(hospitalId, departmentId);
 	}
 	
-	@RequestMapping(path="/searchPatinet?did={did}",method=RequestMethod.POST)
-	public ResponseEntity<Map<String, String>> searchPatient(@PathVariable("did") int did,String pName,String SN,String date){
-		return null;
-	}
-	
-	@RequestMapping(path="/findPatientBySFZ?cid={cid}",method=RequestMethod.POST)
-	public ResponseEntity<Map<String, String>> findPatientByCid(@PathVariable("cid") String cid){
-		return null;
-	}
-	
-	@RequestMapping(path="/uploadDiagnoseInfo?did={did}")
-	public Map<String, Object> uploadDiagnoseInfo(@PathVariable("did") int did,@RequestBody DiagnoseT diagnose){
-		return null;
-	}
-	
-	@RequestMapping(path="/listDInfos?did={did}")
-	public List<DiagnoseT> ListDInfos(@PathVariable("did") int did){
-		return null;
-	}
-	
-	@RequestMapping(path="/embarkAppointment?did={did}&pid={pid}")
-	public String embarkAppointment(int did,int pid) {
-		return null;
-	}
 	
 
 	

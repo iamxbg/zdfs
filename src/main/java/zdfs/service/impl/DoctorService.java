@@ -64,6 +64,27 @@ public class DoctorService implements IDoctorService {
 		return mapper.selectByExample(example);
 	}
 
+	@Override
+	public List<DoctorT> findByHospitalId(int hospitalId) {
+		// TODO Auto-generated method stub
+		DoctorTExample example=new DoctorTExample();
+			example.createCriteria().andHospital_idEqualTo(hospitalId)
+									.andDelflagEqualTo(false);
+			example.setOrderByClause("id");
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<DoctorT> findByHospitalIdAndDepartmentId(int hospitalId, int departmentId) {
+		// TODO Auto-generated method stub
+		DoctorTExample example=new DoctorTExample();
+			example.createCriteria().andDelflagEqualTo(false)
+									.andHospital_idEqualTo(hospitalId)
+									.andDepartment_idEqualTo(departmentId);
+			example.setOrderByClause("id");
+		return mapper.selectByExample(example);
+	}
+
 
 
 	

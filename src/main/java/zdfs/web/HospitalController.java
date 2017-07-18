@@ -1,5 +1,9 @@
 package zdfs.web;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,44 +12,56 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import zdfs.model.HospitalT;
 import zdfs.service.impl.HospitalService;
 
-@Controller
-@RequestMapping("/test/hospital")
+@RestController
+@RequestMapping("/hospital")
 public class HospitalController {
 
 	@Autowired
 	private HospitalService hService;
 	
 	@RequestMapping(path="/add",method=RequestMethod.POST)
-	public ResponseEntity<HospitalT> add(@RequestBody HospitalT hospital){
-		//hospital.setId(hService.add(hospital));
-		//return new ResponseEntity<HospitalT>(hospital, HttpStatus.OK);
-		return null;
+	public Map<String, Object> add(@RequestBody HospitalT hospital){
+		Map<String, Object> resultMap=new HashMap<>();
+		hService.add(hospital);
+		resultMap.put("is_success", 1);
+		resultMap.put("hospital", hospital);
+		return resultMap;
 	}
 	
 	
 	@RequestMapping(path="/update",method=RequestMethod.POST)
-	public ResponseEntity<HospitalT> update(@RequestBody HospitalT hospital){
+	public Map<String, Object> update(@RequestBody HospitalT hospital){
 		hService.update(hospital);
-		return new ResponseEntity<HospitalT>(hService.findById(hospital.getId()), HttpStatus.OK);
+		Map<String, Object> resultMap=new HashMap<>();
+			resultMap.put("is_success", 1);
+			resultMap.put("hospital", hospital);
+		return resultMap;
 	}
 	
 	@RequestMapping(path="/delete/{hospitalId}",method=RequestMethod.POST)
-	public ResponseEntity deleteById(@PathVariable("hospitalId") int hospitalId){
-			hService.deleteById(hospitalId);
-			return new ResponseEntity<>(HttpStatus.OK);
+	public Map<String, Object> deleteById(@PathVariable("hospitalId") int hospitalId){
+		Map<String, Object> resultMap=new HashMap<>();
+			
+		hService.deleteById(hospitalId);
+		resultMap.put("is_success", 1);
+		
+		return resultMap;
 	}
 	
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(path="/findById/hospitalId={hospitalId}")
-	public ResponseEntity<HospitalT> findById(@PathVariable("hospitalId") int hospitalId){
-		return new ResponseEntity(hService.findById(hospitalId),HttpStatus.OK);
+	@RequestMapping(path="/findById/{hospitalId}",method=RequestMethod.GET)
+	public HospitalT findById(@PathVariable("hospitalId") int hospitalId){
+		return hService.findById(hospitalId);
 	}
 	
-	
+	@RequestMapping(path="/listAll",method=RequestMethod.GET)
+	public List<HospitalT> listAll(){
+		return hService.findAll();
+	}
 	
 	
 		

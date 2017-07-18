@@ -7,9 +7,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import zdfs.tf02.model.BfData;
 import zdfs.tf02.model.BpData;
@@ -18,8 +20,9 @@ import zdfs.tf02.model.GluData;
 import zdfs.tf02.model.Rspo2Data;
 import zdfs.tf02.service.IHealthDataService;
 import zdfs.tf02.service.impl.HealthDataService;
+import zdfs.web.param.HealthDataParam;
 
-@Controller
+@RestController
 @RequestMapping(path="/healthData")
 public class HealthDataController {
 
@@ -30,46 +33,46 @@ public class HealthDataController {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@ResponseBody
+	
 	@RequestMapping(path="/findEcgDataByDateRange",method=RequestMethod.POST)
-	public List<EcgData> findEcgData(int memberId,String startDateStr,String endDateStr) throws ParseException{
+	public List<EcgData> findEcgData(@RequestBody HealthDataParam data) throws ParseException{
 		
-		Date startDate=parseDateStrToDate(startDateStr);
-		Date endDate=parseDateStrToDate(endDateStr);
+		Date startDate=parseDateStrToDate(data.getStartDateStr());
+		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findEcgDataByDateRange(memberId, startDate, endDate);
+		return hdService.findEcgDataByDateRange(data.getMemberId(), startDate, endDate);
 	}
 
 	@RequestMapping(path="/findBpDataByDateRange",method=RequestMethod.POST)
-	public List<BpData> findBpData(int memberId,String startDateStr,String endDateStr) throws ParseException{
-		Date startDate=parseDateStrToDate(startDateStr);
-		Date endDate=parseDateStrToDate(endDateStr);
+	public List<BpData> findBpData(@RequestBody HealthDataParam data) throws ParseException{
+		Date startDate=parseDateStrToDate(data.getStartDateStr());
+		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findBpDataByDateRange(memberId, startDate, endDate);
+		return hdService.findBpDataByDateRange(data.getMemberId(), startDate, endDate);
 	}
 	
 	@RequestMapping(path="/findBfDataByDateRange",method=RequestMethod.POST)
-	public List<BfData> findBfData(int memberId,String startDateStr,String endDateStr) throws ParseException{
-		Date startDate=parseDateStrToDate(startDateStr);
-		Date endDate=parseDateStrToDate(endDateStr);
+	public List<BfData> findBfData(@RequestBody HealthDataParam data) throws ParseException{
+		Date startDate=parseDateStrToDate(data.getStartDateStr());
+		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findBfDataByDateRange(memberId, startDate, endDate);
+		return hdService.findBfDataByDateRange(data.getMemberId(), startDate, endDate);
 	}
 	
 	@RequestMapping(path="/findRspo2DataByDateRange",method=RequestMethod.POST)
-	public List<Rspo2Data> findRspo2Data(int memberId,String startDateStr,String endDateStr) throws ParseException{
-		Date startDate=parseDateStrToDate(startDateStr);
-		Date endDate=parseDateStrToDate(endDateStr);
+	public List<Rspo2Data> findRspo2Data(@RequestBody HealthDataParam data) throws ParseException{
+		Date startDate=parseDateStrToDate(data.getStartDateStr());
+		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findRspo2DataByDateRange(memberId, startDate, endDate);
+		return hdService.findRspo2DataByDateRange(data.getMemberId(), startDate, endDate);
 	}
 	
 	@RequestMapping(path="/findGluDataByDateRange",method=RequestMethod.POST)
-	public List<GluData> findGluData(int memberId,String startDateStr,String endDateStr) throws ParseException{
-		Date startDate=parseDateStrToDate(startDateStr);
-		Date endDate=parseDateStrToDate(endDateStr);
+	public List<GluData> findGluData(@RequestBody HealthDataParam data) throws ParseException{
+		Date startDate=parseDateStrToDate(data.getStartDateStr());
+		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findGluDataByDateRange(memberId, startDate, endDate);
+		return hdService.findGluDataByDateRange(data.getMemberId(), startDate, endDate);
 	}
 	
 	 Date parseDateStrToDate(String dateStr) throws ParseException{
