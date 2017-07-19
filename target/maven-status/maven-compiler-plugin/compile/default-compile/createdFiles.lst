@@ -32,6 +32,7 @@ zdfs\tf02\model\Rspo2DataExample$Criteria.class
 zdfs\message\IDoctorStatusSubscriber.class
 zdfs\dao\PatientTMapper.class
 zdfs\tf02\dao\Rspo2DataMapper.class
+zdfs\web\MetaController.class
 zdfs\service\IAppointmentService.class
 zdfs\model\DiagnoseTExample$GeneratedCriteria.class
 zdfs\model\RDoctorAnychatTExample$GeneratedCriteria.class
@@ -50,7 +51,6 @@ zdfs\tf02\model\BpDataExample$Criteria.class
 zdfs\tf02\model\BfDataExample$Criterion.class
 zdfs\model\MetaDoctorTypeT.class
 zdfs\model\MetaDepartmentTypeTExample$GeneratedCriteria.class
-zdfs\web\UserController.class
 zdfs\tf02\model\EcgDataExample$Criteria.class
 zdfs\model\DoctorTExample$GeneratedCriteria.class
 zdfs\model\DoctorTExample$Criterion.class
@@ -128,3 +128,4 @@ zdfs\service\IMetaDoctorTypeService.class
 zdfs\tf02\model\GluData.class
 zdfs\service\IDiagnoseService.class
 zdfs\message\MessageDelegate.class
+zdfs\web\param\HealthDataParam.class

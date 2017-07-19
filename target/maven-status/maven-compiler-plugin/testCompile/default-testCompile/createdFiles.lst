@@ -2,6 +2,7 @@ zdfs\service\MetaDoctorTypeServiceTest.class
 zdfs\service\MetaDepartmentTypeServiceTest.class
 zdfs\service\PatientServiceTest.class
 zdfs\service\DepartmentServiceTest.class
+zdfs\tf02\service\HealthDataServiceTest.class
 zdfs\service\DoctorServiceTest.class
 zdfs\service\AppointmentServiceTest.class
 zdfs\service\DiagnoseServiceTest.class

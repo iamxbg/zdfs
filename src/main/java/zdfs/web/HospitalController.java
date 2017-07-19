@@ -1,5 +1,6 @@
 package zdfs.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import zdfs.model.HospitalT;
 import zdfs.service.impl.HospitalService;
+import zdfs.web.param.ResponseParam;
 
 @RestController
 @RequestMapping("/hospital")
@@ -25,42 +27,53 @@ public class HospitalController {
 	private HospitalService hService;
 	
 	@RequestMapping(path="/add",method=RequestMethod.POST)
-	public Map<String, Object> add(@RequestBody HospitalT hospital){
-		Map<String, Object> resultMap=new HashMap<>();
+	public ResponseParam<HospitalT> add(@RequestBody HospitalT hospital){
+
 		hService.add(hospital);
-		resultMap.put("is_success", 1);
-		resultMap.put("hospital", hospital);
-		return resultMap;
+
+		ResponseParam<HospitalT> resp=new ResponseParam<>();
+		List<HospitalT> dList=new ArrayList<>();
+			dList.add(hospital);
+			resp.setData(dList);
+		return resp;
 	}
 	
 	
 	@RequestMapping(path="/update",method=RequestMethod.POST)
-	public Map<String, Object> update(@RequestBody HospitalT hospital){
+	public ResponseParam<HospitalT> update(@RequestBody HospitalT hospital){
 		hService.update(hospital);
-		Map<String, Object> resultMap=new HashMap<>();
-			resultMap.put("is_success", 1);
-			resultMap.put("hospital", hospital);
-		return resultMap;
-	}
-	
-	@RequestMapping(path="/delete/{hospitalId}",method=RequestMethod.POST)
-	public Map<String, Object> deleteById(@PathVariable("hospitalId") int hospitalId){
-		Map<String, Object> resultMap=new HashMap<>();
+		ResponseParam<HospitalT> resp=new ResponseParam<>();
 			
-		hService.deleteById(hospitalId);
-		resultMap.put("is_success", 1);
-		
-		return resultMap;
+		List<HospitalT> dList=new ArrayList<>();
+			dList.add(hospital);
+			
+			resp.setData(dList);
+
+		return resp;
 	}
 	
-	@RequestMapping(path="/findById/{hospitalId}",method=RequestMethod.GET)
-	public HospitalT findById(@PathVariable("hospitalId") int hospitalId){
-		return hService.findById(hospitalId);
+	@RequestMapping(path="/delete/hospitalId={hospitalId}",method=RequestMethod.POST)
+	public ResponseParam<HospitalT> deleteById(@PathVariable("hospitalId") int hospitalId){
+
+		hService.deleteById(hospitalId);
+		
+		return new ResponseParam<>();
+		
+	}
+	
+	@RequestMapping(path="/findById/hospitalId={hospitalId}",method=RequestMethod.GET)
+	public ResponseParam<HospitalT> findById(@PathVariable("hospitalId") int hospitalId){
+		HospitalT h= hService.findById(hospitalId);
+		List<HospitalT> dList=new ArrayList<>();
+			dList.add(h);
+			
+		return new ResponseParam<>(dList);
 	}
 	
 	@RequestMapping(path="/listAll",method=RequestMethod.GET)
-	public List<HospitalT> listAll(){
-		return hService.findAll();
+	public ResponseParam<HospitalT> listAll(){
+		List<HospitalT> dList= hService.findAll();
+		return new ResponseParam(dList);
 	}
 	
 	

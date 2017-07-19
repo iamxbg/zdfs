@@ -1,5 +1,6 @@
 package zdfs.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import zdfs.service.IPatientService;
 import zdfs.tf02.model.MembersInfo;
 import zdfs.tf02.service.IMembersInfoService;
 import zdfs.util.AgeUtil;
+import zdfs.web.param.ResponseParam;
 
 @Controller
 @RequestMapping(path="/patient")
@@ -39,58 +41,53 @@ public class PatientController {
 
 	
 	@ResponseBody
-	@RequestMapping(path="/findByDoctorId/{doctorId}",method=RequestMethod.GET)
-	public List<PatientT> findByDoctorId(@PathVariable("doctorId") int doctorId) {
+	@RequestMapping(path="/findByDoctorId/doctorId={doctorId}",method=RequestMethod.GET)
+	public ResponseParam<PatientT> findByDoctorId(@PathVariable("doctorId") int doctorId) {
 
-		return pService.findByDoctorId(doctorId);
+
+		List<PatientT> dList= pService.findByDoctorId(doctorId);
+		
+		return new ResponseParam<>(dList);
 	
 	}
 	
 	@ResponseBody
 	@RequestMapping(path="/create")
-	public Map<String, Object> create(@RequestBody PatientT patient){
-		pService.add(patient);
-		Map<String,Object> resultMap=new HashMap<>();
-		resultMap.put("is_success", 1);
-		resultMap.put("patient", patient);
+	public ResponseParam<PatientT> create(@RequestBody PatientT patient){
 		
-		return resultMap;
+		ResponseParam<PatientT> resp=new ResponseParam<>();
+			pService.add(patient);
+			List<PatientT> dList=new ArrayList<>();
+				dList.add(patient);
+			resp.setData(dList);
+		return resp;
 	}
 	
 	
 	@ResponseBody
-	@RequestMapping(path="/getProfileByMemberId/{memberId}",method=RequestMethod.GET)
-	public Map<String, Object> findPatientProfileByMemberId(@PathVariable("memberId") int memberId){
+	@RequestMapping(path="/getProfileByMemberId/memberId={memberId}",method=RequestMethod.GET)
+	public ResponseParam<PatientT> findPatientProfileByMemberId(@PathVariable("memberId") int memberId){
 		MembersInfo mi=miService.findByMemberId(memberId);
-		Map<String, Object> resultMap=new HashMap<>();
-			
+		//Map<String, Object> resultMap=new HashMap<>();
+
+		ResponseParam<PatientT> resp=new ResponseParam<>();
+		
 		if(mi!=null){
 			
 			int age=AgeUtil.computeAgeByBirthday(mi.getBirthday());
 			PatientT patient=new PatientT(mi.getMembersname(), mi.getSex(), age, mi.getId(), 0);
-			resultMap.put("is_success", 1);
-			resultMap.put("patient", patient);
+			List<PatientT> pList=new ArrayList<PatientT>();
+				pList.add(patient);
+			resp.setData(pList);
+			
 		}else{
-			resultMap.put("is_success", 0);
-			resultMap.put("reason", "Not Found!");
+			resp.setCode(1);
+			resp.setInfo("Not Found!");
 		}
-		return resultMap;
+		return resp;
 	}
 
-	
 
-	@Deprecated
-	@ResponseBody
-	@RequestMapping("/searchByName/doctorId={doctorId}&type={type}&message={message}")
-	public List<PatientT> searchByMessage(@PathVariable("doctorId") int doctorId,@PathVariable("type") String type,@PathVariable("message") Object message){
-			if("ZH_shebaohao".equals(type)){
-				return null;
-			}else if("name".equals(type)){
-				return pService.findByDoctorIdAndNameLike(doctorId, String.valueOf(message));
-			}
-			return null;
-		
-	}
 	
 
 }

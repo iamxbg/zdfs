@@ -2,6 +2,7 @@ package zdfs.web;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import zdfs.model.DiagnoseT;
 import zdfs.model.DoctorT;
 import zdfs.service.IDoctorService;
 import zdfs.service.impl.DoctorService;
+import zdfs.web.param.ResponseParam;
 
 
 @RestController
@@ -43,25 +45,27 @@ public class DoctorController {
 	@ResponseBody
 	@Consumes("applicaton/x-www-form-urlencoded")
 	@RequestMapping(path="/login",method=RequestMethod.POST)
-	public Map<String, Object> login(@RequestParam("tel") String tel
+	public ResponseParam<DoctorT> login(@RequestParam("tel") String tel
 			,@RequestParam("pwd") String pwd){
 		
 		log.info("username:"+tel);
 		log.info("password:"+pwd);
 		
+		ResponseParam<DoctorT> resp=new ResponseParam<>();
+		
 		List<DoctorT> dList= doctorService.findByTelAndPwd(tel, pwd);
 		
 		Map<String, Object> result=new HashMap<>();
 		if(dList.size()>0){
-			result.put("is_success", 1);
-			DoctorT doctor=dList.get(0);
-			doctor.setPwd(null);
-			result.put("doctor",doctor);
+			
+			dList.get(0).setPwd("");;
+			resp.setData(dList);
+			
 		}else{
-			result.put("is_success", 0);
+			resp.setCode(1);
 		}
 		
-		return result;
+		return resp;
 
 	}
 	
@@ -69,31 +73,35 @@ public class DoctorController {
 	@RequestMapping(path="/update",method=RequestMethod.POST)
 	@Consumes("application/json;charset=utf-8")
 	@Produces("application/json;charset=utf-8")
-	public Map<String, Object> update(@RequestBody DoctorT doctor){
+	public ResponseParam<DoctorT> update(@RequestBody DoctorT doctor){
 		
 		DoctorT old=doctorService.findById(doctor.getId());
-		Map<String,Object> resultMap=new HashMap<>();
+		
+		ResponseParam<DoctorT> resp=new ResponseParam<>();
 		if(old!=null){
 			doctor.setPwd(old.getPwd());
 			doctorService.update(doctor);
-			
-				resultMap.put("is_success", 1);
 				doctor.setPwd(null);
-				resultMap.put("doctor", doctor);
+			
+			List<DoctorT> dList=new ArrayList<>();
+				dList.add(doctor);
+		
+				resp.setData(dList);
+				
 		}else{
-			resultMap.put("is_success", 0);
-			resultMap.put("reason", "can't find doctor by ID!");
+	
+			resp.setCode(1);
 		}
 		
 			
-		return resultMap;
+		return resp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(path="/register",method=RequestMethod.POST)
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json;charset=utf-8")
-	public Map<String, Object> register(@RequestParam("tel") String tel
+	public ResponseParam<DoctorT> register(@RequestParam("tel") String tel
 								,@RequestParam("pwd") String pwd
 								,@RequestParam("mail") String mail
 			,@RequestParam("name") String name
@@ -103,6 +111,8 @@ public class DoctorController {
 			,@RequestParam("doctor_type_id") Integer doctor_type_id
 			,@RequestParam("good_at") String good_at
 			){	
+		
+		ResponseParam<DoctorT> resp=new ResponseParam<>();
 		
 		// validate if message is complete.
 		log.info("@register");
@@ -130,22 +140,25 @@ public class DoctorController {
 		
 		doctor.setPwd(null);
 
-		Map<String, Object> resultMap=new HashMap<>();
-			resultMap.put("is_success", 1);
-			resultMap.put("doctor", doctor);
 		
+		List<DoctorT> dList=new ArrayList<>();
+			dList.add(doctor);
+			
+		resp.setData(dList);
 		
-		return resultMap;
+		return resp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(path="/changePwd/doctorId={doctorId}",method=RequestMethod.POST)
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json;charset=utf-8")
-	public Map<String, Object> changePwd(@PathVariable("doctorId") int doctorId
+	public ResponseParam<DoctorT> changePwd(@PathVariable("doctorId") int doctorId
 										,@RequestParam(value="code",required=false) String code
 										,@RequestParam("pwd") String pwd) {
 		
+		
+		ResponseParam<DoctorT> resp=new ResponseParam<>();
 		
 		log.info("doctorId:"+doctorId+" code:"+code+" pwd:"+pwd);
 		
@@ -154,30 +167,35 @@ public class DoctorController {
 			doctor.setPwd(pwd);
 		
 			doctorService.update(doctor);
-		
-		Map<String, Object> result=new HashMap<>();
-			result.put("is_success", 1);
+
+
+			List<DoctorT> dList=new ArrayList<>();
+				dList.add(doctor);
 			
-		return result;
+			resp.setData(dList);
+			
+		return resp;
 	}
 	
 
-	@RequestMapping(path="/isExists?tel={tel}",method=RequestMethod.GET)
-	public ResponseEntity<Map<String,Object>> checkExists(@PathVariable("tel") int tel){
-		
-		return null;
-	}
 	
 	@ResponseBody
-	@RequestMapping(path="/findByHospitalId/{hospitalId}",method=RequestMethod.GET)
-	public List<DoctorT> findByHospitalId(@PathVariable("hospitalId") int hospitalId){
-		return doctorService.findByHospitalId(hospitalId);
+	@RequestMapping(path="/findByHospitalId/hospitalId={hospitalId}",method=RequestMethod.GET)
+	public ResponseParam<DoctorT> findByHospitalId(@PathVariable("hospitalId") int hospitalId){
+		ResponseParam<DoctorT> resp=new ResponseParam<>();
+		List<DoctorT> dList= doctorService.findByHospitalId(hospitalId);
+		resp.setData(dList);
+		return resp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(path="/find/hospitalId={hospitalId}&departmentId={departmentId}",method=RequestMethod.GET)
-	public List<DoctorT> findByHospitalAndDepartment(@PathVariable("hospitalId") int hospitalId,@PathVariable("departmentId") int departmentId){
-		return doctorService.findByHospitalIdAndDepartmentId(hospitalId, departmentId);
+	public ResponseParam<DoctorT> findByHospitalAndDepartment(@PathVariable("hospitalId") int hospitalId,@PathVariable("departmentId") int departmentId){
+		ResponseParam<DoctorT> resp=new ResponseParam<>();
+		List<DoctorT> dList= doctorService.findByHospitalIdAndDepartmentId(hospitalId, departmentId);
+		resp.setData(dList);
+		
+		return resp;
 	}
 	
 	

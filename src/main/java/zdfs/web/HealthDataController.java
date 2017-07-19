@@ -21,6 +21,7 @@ import zdfs.tf02.model.Rspo2Data;
 import zdfs.tf02.service.IHealthDataService;
 import zdfs.tf02.service.impl.HealthDataService;
 import zdfs.web.param.HealthDataParam;
+import zdfs.web.param.ResponseParam;
 
 @RestController
 @RequestMapping(path="/healthData")
@@ -35,44 +36,49 @@ public class HealthDataController {
 	
 	
 	@RequestMapping(path="/findEcgDataByDateRange",method=RequestMethod.POST)
-	public List<EcgData> findEcgData(@RequestBody HealthDataParam data) throws ParseException{
+	public ResponseParam<EcgData> findEcgData(@RequestBody HealthDataParam data) throws ParseException{
 		
 		Date startDate=parseDateStrToDate(data.getStartDateStr());
 		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findEcgDataByDateRange(data.getMemberId(), startDate, endDate);
+		List<EcgData> dList= hdService.findEcgDataByDateRange(data.getMemberId(), startDate, endDate);
+		return new ResponseParam<>(dList);
 	}
 
 	@RequestMapping(path="/findBpDataByDateRange",method=RequestMethod.POST)
-	public List<BpData> findBpData(@RequestBody HealthDataParam data) throws ParseException{
+	public ResponseParam<BpData> findBpData(@RequestBody HealthDataParam data) throws ParseException{
 		Date startDate=parseDateStrToDate(data.getStartDateStr());
 		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findBpDataByDateRange(data.getMemberId(), startDate, endDate);
+		List<BpData> dList=hdService.findBpDataByDateRange(data.getMemberId(), startDate, endDate);
+		return new ResponseParam<>(dList);
 	}
 	
 	@RequestMapping(path="/findBfDataByDateRange",method=RequestMethod.POST)
-	public List<BfData> findBfData(@RequestBody HealthDataParam data) throws ParseException{
+	public ResponseParam<BfData> findBfData(@RequestBody HealthDataParam data) throws ParseException{
 		Date startDate=parseDateStrToDate(data.getStartDateStr());
 		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findBfDataByDateRange(data.getMemberId(), startDate, endDate);
+		List<BfData> dList=hdService.findBfDataByDateRange(data.getMemberId(), startDate, endDate);
+		return new ResponseParam<>(dList);
 	}
 	
 	@RequestMapping(path="/findRspo2DataByDateRange",method=RequestMethod.POST)
-	public List<Rspo2Data> findRspo2Data(@RequestBody HealthDataParam data) throws ParseException{
+	public ResponseParam<Rspo2Data> findRspo2Data(@RequestBody HealthDataParam data) throws ParseException{
 		Date startDate=parseDateStrToDate(data.getStartDateStr());
 		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findRspo2DataByDateRange(data.getMemberId(), startDate, endDate);
+		List<Rspo2Data> dList= hdService.findRspo2DataByDateRange(data.getMemberId(), startDate, endDate);
+		return new ResponseParam<>(dList);
 	}
 	
 	@RequestMapping(path="/findGluDataByDateRange",method=RequestMethod.POST)
-	public List<GluData> findGluData(@RequestBody HealthDataParam data) throws ParseException{
+	public ResponseParam<GluData> findGluData(@RequestBody HealthDataParam data) throws ParseException{
 		Date startDate=parseDateStrToDate(data.getStartDateStr());
 		Date endDate=parseDateStrToDate(data.getEndDateStr());
 		
-		return hdService.findGluDataByDateRange(data.getMemberId(), startDate, endDate);
+		List<GluData> dList= hdService.findGluDataByDateRange(data.getMemberId(), startDate, endDate);
+		return new ResponseParam<>(dList);
 	}
 	
 	 Date parseDateStrToDate(String dateStr) throws ParseException{

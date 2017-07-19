@@ -1,5 +1,6 @@
 package zdfs.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import zdfs.model.MetaDepartmentTypeT;
 import zdfs.model.MetaDoctorTypeT;
 import zdfs.service.IMetaDepartmentTypeService;
 import zdfs.service.IMetaDoctorTypeService;
+import zdfs.web.param.ResponseParam;
 
 @RestController
 @RequestMapping("/metaData")
@@ -31,49 +33,67 @@ public class MetaController {
 	}
 
 	@RequestMapping(value="/departmentType/add",method=RequestMethod.POST)
-	public Map<String, Object> addDepartmentType(@RequestBody MetaDepartmentTypeT type){
+	public ResponseParam<MetaDepartmentTypeT> addDepartmentType(@RequestBody MetaDepartmentTypeT type){
 		
 		mDptService.add(type);
-		Map<String, Object> result=new HashMap<>();
-			result.put("is_success", 1);
+		//Map<String, Object> result=new HashMap<>();
+			//result.put("is_success", 1);
 			
-		return result;
+		ResponseParam<MetaDepartmentTypeT> resp=new ResponseParam<>();
+			List<MetaDepartmentTypeT> dList=new ArrayList<>();
+				dList.add(type);
+			resp.setData(dList);
+		return resp;
 		
 		
 	}
 	
 	@RequestMapping(value="/doctorType/add",method=RequestMethod.POST)
-	public Map<String, Object> addDoctorType(@RequestBody MetaDoctorTypeT type){
+	public ResponseParam<MetaDoctorTypeT> addDoctorType(@RequestBody MetaDoctorTypeT type){
 		mDocService.add(type);
-		Map<String, Object> result=new HashMap<>();
-			result.put("is_success", 1);
+		//Map<String, Object> result=new HashMap<>();
+			//result.put("is_success", 1);
 			
-		return result;
+			ResponseParam<MetaDoctorTypeT> resp=new ResponseParam<>();
+				List<MetaDoctorTypeT> dList=new ArrayList<>();
+					dList.add(type);
+				
+					resp.setData(dList);
+		return resp;
 	}
 	
 	@RequestMapping(value="/doctorType/list",method=RequestMethod.GET)
-	public List<MetaDoctorTypeT> listDoctorType(){
-		return mDocService.listAll();
+	public ResponseParam<MetaDoctorTypeT> listDoctorType(){
+		ResponseParam<MetaDoctorTypeT> resp=new ResponseParam<>();
+			
+		List<MetaDoctorTypeT> dList= mDocService.listAll();
+			resp.setData(dList);
+			
+			return resp;
 	}
 	
 	@RequestMapping(value="/departmentType/list",method=RequestMethod.GET)
-	public List<MetaDepartmentTypeT> listDepartmentType(){
-		return mDptService.listAll();
+	public ResponseParam<MetaDepartmentTypeT> listDepartmentType(){
+		ResponseParam<MetaDepartmentTypeT> resp=new ResponseParam<>();
+			List<MetaDepartmentTypeT> dList= mDptService.listAll();
+			resp.setData(dList);
+		
+			return resp;
+		
 	}
 	
-	@RequestMapping(value="/{type}/del/{id}",method=RequestMethod.POST)
-	public Map<String, Object> deleteMeta(@PathVariable("type") String type,@PathVariable("id") Integer id){
-		Map<String, Object> resultMap=new HashMap<>();
+	@RequestMapping(value="/{type}/del/id={id}",method=RequestMethod.POST)
+	public ResponseParam deleteMeta(@PathVariable("type") String type,@PathVariable("id") Integer id){
+		//Map<String, Object> resultMap=new HashMap<>();
+		ResponseParam resp=new ResponseParam<>();
 		if("doctorType".equals(type)){
 			mDocService.deleteById(id);
-			resultMap.put("is_success", 1);
 		}else if("departmentType".equals(type)){
 			mDptService.deleteById(id);
-			resultMap.put("is_success", 1);
 		}else{
-			resultMap.put("is_success", 0);
-			resultMap.put("reason", "UNKNOW_META_TYPE");
+			resp.setCode(1);
+			resp.setInfo("UNKOWN_TYPE");
 		}
-		return resultMap;
+		return resp;
 	}
 }
