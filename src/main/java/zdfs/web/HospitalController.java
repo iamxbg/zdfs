@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import zdfs.model.HospitalT;
 import zdfs.service.impl.HospitalService;
 import zdfs.web.param.ResponseParam;
@@ -27,8 +29,9 @@ public class HospitalController {
 	private HospitalService hService;
 	
 	@RequestMapping(path="/add",method=RequestMethod.POST)
-	public ResponseParam<HospitalT> add(@RequestBody HospitalT hospital){
-
+	public ResponseParam<HospitalT> add(@RequestBody HospitalT hospital) throws MySQLIntegrityConstraintViolationException{
+		
+		
 		hService.add(hospital);
 
 		ResponseParam<HospitalT> resp=new ResponseParam<>();
