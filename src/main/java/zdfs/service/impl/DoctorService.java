@@ -85,8 +85,17 @@ public class DoctorService implements IDoctorService {
 		return mapper.selectByExample(example);
 	}
 
-
-
+	@Override
+	public List<DoctorT> findByTel(String tel){
+		DoctorTExample example=new DoctorTExample();
+			example.createCriteria().andDelflagEqualTo(false)
+									.andTelEqualTo(tel);
+			
+			example.setOrderByClause("id");
+			
+			return mapper.selectByExample(example);
+			
+	}
 	
 
 

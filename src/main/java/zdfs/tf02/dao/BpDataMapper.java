@@ -93,4 +93,7 @@ public interface BpDataMapper {
      * @mbg.generated Tue Jul 18 05:07:32 CST 2017
      */
     int updateByPrimaryKey(BpData record);
+    
+    
+    BpData findLatest(Integer memberId);
 }

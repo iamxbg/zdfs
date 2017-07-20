@@ -49,7 +49,29 @@ public class AppointmentService implements IAppointmentService {
 		return mapper.selectByPrimaryKey((long)id);
 	}
 
+	@Override
+	public List<AppointmentT> findByDoctorId(int doctorId) {
+		// TODO Auto-generated method stub
+		AppointmentTExample example=new AppointmentTExample();
+			example.createCriteria().andDelflagEqualTo(false)
+									.andD_idEqualTo(doctorId);
+			example.setOrderByClause("appoint_date");
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<AppointmentT> findByMemberIdAndDoctorId(int doctorId, int patientId) {
+		// TODO Auto-generated method stub
+		AppointmentTExample example=new AppointmentTExample();
+			example.createCriteria().andDelflagEqualTo(false)
+									.andP_idEqualTo(patientId);
+			
+			example.setOrderByClause("appoint_date");
+			
+		return mapper.selectByExample(example);
+	}
 
 
+	
 
 }

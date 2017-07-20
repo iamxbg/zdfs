@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import zdfs.model.DiagnoseT;
 import zdfs.model.DoctorT;
+import zdfs.model.RDoctorAnychatT;
 import zdfs.service.IDoctorService;
 import zdfs.service.impl.DoctorService;
 import zdfs.web.param.ResponseParam;
@@ -41,6 +42,9 @@ public class DoctorController {
 	
 	@Autowired
 	private DoctorService doctorService;
+	@Autowired
+	private RDoctorAnychatT rdaService;
+	
 	
 	@ResponseBody
 	@Consumes("applicaton/x-www-form-urlencoded")
@@ -67,6 +71,19 @@ public class DoctorController {
 		
 		return resp;
 
+	}
+	
+	@ResponseBody
+	@RequestMapping(path="/logout/doctorId={doctorId}",method=RequestMethod.POST)
+	public ResponseParam<DoctorT> logout(@PathVariable("doctorId") int doctorId){
+		
+		return new ResponseParam<>();
+	}
+	
+	@ResponseBody
+	@RequestMapping(path="/getAnyChatId/doctorId={doctorId}",method=RequestMethod.GET)
+	public ResponseParam<RDoctorAnychatT> getRDoctorAnychatT(@PathVariable("doctorId") int doctorId){
+		rdaService.find
 	}
 	
 	@ResponseBody
@@ -198,7 +215,32 @@ public class DoctorController {
 		return resp;
 	}
 	
+	@SuppressWarnings("rawtypes")
+	@ResponseBody
+	@RequestMapping(path="/findByTel/tel={tel}")
+	public ResponseParam findByTel(@PathVariable("tel") String tel){
+		ResponseParam<DoctorT> resp=new ResponseParam();
+		
+		List<DoctorT> dList=doctorService.findByTel(tel);
+		if(dList!=null && dList.size()>0){
+			return new ResponseParam<>(dList);
+		}else
+			return new ResponseParam<>(1, "用戶不存在!");
+	}
 	
-
+	@SuppressWarnings("rawtypes")
+	@ResponseBody
+	@RequestMapping(path="/checkIfExists/tel={tel}")
+	public ResponseParam checkIfExists(@PathVariable("tel") String tel){
+		ResponseParam resp=new ResponseParam<>();
+		List<DoctorT> dList=doctorService.findByTel(tel);
+		return dList.size()>0?new ResponseParam<>():new ResponseParam<>(1, "沒有電話!");
+	}
 	
+	@ResponseBody
+	@RequestMapping(path="/bindAnyChat/doctorId={doctorId}&anychatId={anychatId}")
+	public ResponseParam<DoctorT> bindAnyChat(@PathVariable("doctorId") int doctorId,@PathVariable("anychatId") int anychatId){
+		ResponseParam<DoctorT> resp=new ResponseParam<>();
+			return null;
+	}
 }

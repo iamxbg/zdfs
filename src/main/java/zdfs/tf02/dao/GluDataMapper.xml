@@ -349,4 +349,12 @@
       delflag = #{delflag,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id='findLatest'  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from glu_data where id=(select max(id) from glu_data where member_id=#{member_id,jdbcType=VARCHAR})
+  </select>
+  
+  
 </mapper>

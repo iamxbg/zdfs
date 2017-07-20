@@ -93,4 +93,6 @@ public interface GluDataMapper {
      * @mbg.generated Tue Jul 18 05:12:00 CST 2017
      */
     int updateByPrimaryKey(GluData record);
+    
+    GluData findLatest(int memberId);
 }

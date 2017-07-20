@@ -96,4 +96,39 @@ public class HealthDataService implements IHealthDataService {
 	}
 
 
+	@Override
+	public GluData findLastestGluData(int memberId) {
+		// TODO Auto-generated method stub
+		return gluMapper.findLatest(memberId);
+	}
+
+
+	@Override
+	public EcgData findLastestEcgData(int memberId) {
+		// TODO Auto-generated method stub
+		return ecgMapper.findLatest(memberId);
+	}
+
+
+	@Override
+	public BpData findLastestBpData(int memberId) {
+		// TODO Auto-generated method stub
+		return bpMapper.findLatest(memberId);
+	}
+
+
+	@Override
+	public Rspo2Data findLastestRspo2Data(int memberId) {
+		// TODO Auto-generated method stub
+		return rspo2Mapper.findLatest(memberId);
+	}
+
+
+	@Override
+	public BfData findLastestBfData(int memberId) {
+		// TODO Auto-generated method stub
+		return bfMapper.findLatest(memberId);
+	}
+
+
 }

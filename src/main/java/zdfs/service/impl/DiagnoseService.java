@@ -44,6 +44,19 @@ public class DiagnoseService implements IDiagnoseService {
 		return mapper.selectByPrimaryKey((long)id);
 	}
 
+	/*
+	@Override
+	public List<DiagnoseT> findByPatientIdAndDoctorId(int patientId, int doctorId) {
+		// TODO Auto-generated method stub
+		DiagnoseTExample example=new DiagnoseTExample();
+			example.createCriteria().andDelflagEqualTo(false)
+									.andP_idEqualTo(patientId)
+									
+									
+		return mapper.selectByExample(example);
+	}
+	*/
+
 
 
 	

@@ -1,6 +1,7 @@
 package zdfs.service.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import zdfs.dao.PatientTMapper;
 import zdfs.model.PatientT;
 import zdfs.model.PatientTExample;
+import zdfs.model.PatientTExample.Criteria;
 import zdfs.service.IPatientService;
 
 @Service
@@ -81,6 +83,20 @@ public class PatientService implements IPatientService {
 		return mapper.selectByExample(example);
 	}
 
+	@Override
+	public List<PatientT> findByExample(int doctorId, String patientName, String socialCard, Date date) {
+		// TODO Auto-generated method stub
+		PatientTExample example=new PatientTExample();
+			Criteria cri=example.createCriteria();
+					cri.andD_idEqualTo(doctorId);
+					if(patientName!=null && "".equals(patientName)) cri.andP_nameEqualTo(patientName);
+					//if(socialCard!=null && "".equals(socialCard)) 
+					//if(date!=null) cri.and
+		return null;
+	}
+
+
+	
 
 
 

@@ -15,4 +15,5 @@ public interface IDoctorService extends CRUDService<DoctorT>{
 	
 	public List<DoctorT> findByHospitalIdAndDepartmentId(int hospitalId,int departmentId);
 	
+	public List<DoctorT> findByTel(String tel);
 }

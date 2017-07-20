@@ -19,7 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import zdfs.model.PatientT;
 import zdfs.service.IPatientService;
+import zdfs.tf02.model.BfData;
+import zdfs.tf02.model.BpData;
+import zdfs.tf02.model.EcgData;
+import zdfs.tf02.model.GluData;
 import zdfs.tf02.model.MembersInfo;
+import zdfs.tf02.model.Rspo2Data;
+import zdfs.tf02.service.IHealthDataService;
 import zdfs.tf02.service.IMembersInfoService;
 import zdfs.util.AgeUtil;
 import zdfs.web.param.ResponseParam;
@@ -32,6 +38,9 @@ public class PatientController {
 	private IPatientService pService;
 	@Autowired
 	private IMembersInfoService miService;
+	
+	@Autowired
+	private IHealthDataService hService;
 	
 	private static Logger log=LogManager.getLogger();
 	
@@ -50,6 +59,13 @@ public class PatientController {
 		return new ResponseParam<>(dList);
 	
 	}
+	
+	@ResponseBody
+	@RequestMapping(path="/findByExample",method=RequestMethod.POST)
+	public ResponseParam<PatientT> findByExample(@RequestBody PatientT patient){
+		pService.findMyPatients(doctorId, patientName, socialCard, date)
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(path="/create")
@@ -87,6 +103,47 @@ public class PatientController {
 		return resp;
 	}
 
+	@ResponseBody
+	@RequestMapping(path="/findPatientDetails/patientId={patientId}")
+	public Map<String, Object> findPatientDetails(@PathVariable("patientId") int patientId){
+		PatientT p=pService.findById(patientId);
+		Map<String, Object> resultMap=new HashMap<>();
+		if(p!=null){ 
+			int memberId=p.getMember_id();
+			
+			resultMap.put("patient", p);
+			
+			//Dignoase Info
+			
+			
+			//the time of lastest video 
+			
+			//health data
+			BfData bfData=hService.findLastestBfData(memberId);
+			BpData bpData=hService.findLastestBpData(memberId);
+			GluData gluData=hService.findLastestGluData(memberId);
+			EcgData ecgData=hService.findLastestEcgData(memberId);
+			Rspo2Data rspo2Data=hService.findLastestRspo2Data(memberId);
+			
+			resultMap.put("bf", bfData);
+			resultMap.put("gluData", gluData);
+			resultMap.put("ecg", ecgData);
+			resultMap.put("rspo2", rspo2Data);
+			resultMap.put("bp", bpData);
+			
+			return resultMap;
+			
+		}else{
+			resultMap.put("code", 1);
+			resultMap.put("info", "User not exists!");
+			
+			return resultMap;
+		}
+		
+		
+		
+
+	}
 
 	
 

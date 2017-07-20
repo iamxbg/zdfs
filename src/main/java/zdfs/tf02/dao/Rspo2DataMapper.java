@@ -93,4 +93,6 @@ public interface Rspo2DataMapper {
      * @mbg.generated Tue Jul 18 05:12:00 CST 2017
      */
     int updateByPrimaryKey(Rspo2Data record);
+    
+    Rspo2Data findLatest(int memberId);
 }
