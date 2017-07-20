@@ -1,0 +1,10 @@
+修改patient_t表中的p_age為p_birthday
+patinet_t添加social_card字段，具體內容參照tf02.membersInfo表
+添加tf02表membersInfo表修改，patient對應的trigger
+
+diagnose_t需要添加 d_id 字段;修改p_id字段為int
+
+
+修改r_doctor_anychat_t 以doctor_id作為主鍵
+
+
