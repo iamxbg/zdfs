@@ -63,7 +63,8 @@ public class PatientController {
 	@ResponseBody
 	@RequestMapping(path="/findByExample",method=RequestMethod.POST)
 	public ResponseParam<PatientT> findByExample(@RequestBody PatientT patient){
-		pService.findMyPatients(doctorId, patientName, socialCard, date)
+		List<PatientT> pList=pService.findByExample(patient.getD_id(), patient.getP_name(), patient.getP_social_card(), patient.getP_birthday());
+		return new ResponseParam<>(pList);
 	}
 	
 	
@@ -90,8 +91,24 @@ public class PatientController {
 		
 		if(mi!=null){
 			
-			int age=AgeUtil.computeAgeByBirthday(mi.getBirthday());
-			PatientT patient=new PatientT(mi.getMembersname(), mi.getSex(), age, mi.getId(), 0);
+			//int age=AgeUtil.computeAgeByBirthday(mi.getBirthday());
+			PatientT patient=new PatientT(mi.getMembersname()
+					, mi.getSex()
+					, mi.getBirthday()
+					, mi.getId()
+					, new Integer(0)
+					, mi.getTel()
+					, mi.getId_type()
+					, mi.getId_card()
+					, ""
+					, mi.getPicture()
+					, mi.getBlood_type()
+					, Boolean.valueOf(mi.getMarry_status()) //, mi.getMarry_status()
+					, mi.getJob()
+					, mi.getSocial_card()
+					, mi.getAddress()
+					, mi.getHome());
+			
 			List<PatientT> pList=new ArrayList<PatientT>();
 				pList.add(patient);
 			resp.setData(pList);

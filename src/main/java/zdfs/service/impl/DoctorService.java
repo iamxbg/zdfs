@@ -2,9 +2,6 @@ package zdfs.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
-
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +11,7 @@ import zdfs.model.DoctorTExample;
 import zdfs.service.IDoctorService;
 
 @Service
-@Transactional
+@org.springframework.transaction.annotation.Transactional
 public class DoctorService implements IDoctorService {
 
 	@Autowired

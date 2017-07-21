@@ -2,11 +2,9 @@ package zdfs.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
-
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import zdfs.dao.DiagnoseTMapper;
 import zdfs.model.DiagnoseT;
@@ -44,18 +42,19 @@ public class DiagnoseService implements IDiagnoseService {
 		return mapper.selectByPrimaryKey((long)id);
 	}
 
-	/*
+	
 	@Override
 	public List<DiagnoseT> findByPatientIdAndDoctorId(int patientId, int doctorId) {
 		// TODO Auto-generated method stub
 		DiagnoseTExample example=new DiagnoseTExample();
 			example.createCriteria().andDelflagEqualTo(false)
 									.andP_idEqualTo(patientId)
+									.andD_idEqualTo(doctorId);
 									
 									
 		return mapper.selectByExample(example);
 	}
-	*/
+	
 
 
 

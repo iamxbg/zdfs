@@ -12,6 +12,7 @@ import zdfs.tf02.dao.BpDataMapper;
 import zdfs.tf02.dao.EcgDataMapper;
 import zdfs.tf02.dao.GluDataMapper;
 import zdfs.tf02.dao.Rspo2DataMapper;
+import zdfs.tf02.dao.TodayRemindMapper;
 import zdfs.tf02.model.BfData;
 import zdfs.tf02.model.BfDataExample;
 import zdfs.tf02.model.BpData;
@@ -22,6 +23,8 @@ import zdfs.tf02.model.GluData;
 import zdfs.tf02.model.GluDataExample;
 import zdfs.tf02.model.Rspo2Data;
 import zdfs.tf02.model.Rspo2DataExample;
+import zdfs.tf02.model.TodayRemind;
+import zdfs.tf02.model.TodayRemindExample;
 import zdfs.tf02.service.IHealthDataService;
 
 @Service
@@ -42,6 +45,8 @@ public class HealthDataService implements IHealthDataService {
 	private BfDataMapper bfMapper;
 	@Autowired
 	private Rspo2DataMapper rspo2Mapper;
+	@Autowired
+	private TodayRemindMapper trMapper;
 
 	
 	@Override
@@ -128,6 +133,44 @@ public class HealthDataService implements IHealthDataService {
 	public BfData findLastestBfData(int memberId) {
 		// TODO Auto-generated method stub
 		return bfMapper.findLatest(memberId);
+	}
+
+
+	@Override
+	public List<TodayRemind> findTodayRemindByMemberId(int memberId) {
+		// TODO Auto-generated method stub
+		TodayRemindExample example=new TodayRemindExample();
+			example.createCriteria().andDelflagEqualTo(false)
+									.andMember_idEqualTo(String.valueOf(memberId));
+			
+			
+		return trMapper.selectByExample(example);
+	}
+
+
+	@Override
+	public List<TodayRemind> findTodayRemindByMemberIdAndDate(int memberId, Date today) {
+		// TODO Auto-generated method stub
+		TodayRemindExample example=new TodayRemindExample();
+		example.createCriteria().andDelflagEqualTo(false)
+								.andMember_idEqualTo(String.valueOf(memberId))
+								.andCreate_dateGreaterThan(today);
+		
+		
+	return trMapper.selectByExample(example);
+	}
+
+
+	@Override
+	public List<TodayRemind> findTodayRemindByMemberIdAndDateRange(int memberId, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		TodayRemindExample example=new TodayRemindExample();
+		example.createCriteria().andDelflagEqualTo(false)
+								.andMember_idEqualTo(String.valueOf(memberId))
+								.andCreate_dateGreaterThan(startDate)
+								.andCreate_dateLessThan(endDate);
+		
+	return trMapper.selectByExample(example);
 	}
 
 

@@ -29,6 +29,7 @@ import zdfs.model.DiagnoseT;
 import zdfs.model.DoctorT;
 import zdfs.model.RDoctorAnychatT;
 import zdfs.service.IDoctorService;
+import zdfs.service.impl.AnychatService;
 import zdfs.service.impl.DoctorService;
 import zdfs.web.param.ResponseParam;
 
@@ -43,7 +44,7 @@ public class DoctorController {
 	@Autowired
 	private DoctorService doctorService;
 	@Autowired
-	private RDoctorAnychatT rdaService;
+	private AnychatService anychatService;
 	
 	
 	@ResponseBody
@@ -83,7 +84,16 @@ public class DoctorController {
 	@ResponseBody
 	@RequestMapping(path="/getAnyChatId/doctorId={doctorId}",method=RequestMethod.GET)
 	public ResponseParam<RDoctorAnychatT> getRDoctorAnychatT(@PathVariable("doctorId") int doctorId){
-		rdaService.find
+		
+		RDoctorAnychatT RDA=anychatService.findByDoctorId(doctorId);
+		if(RDA!=null) {
+			List<RDoctorAnychatT> rdaList=new ArrayList<>();
+				rdaList.add(RDA);
+			return new ResponseParam<>(rdaList);
+		}else {
+			return new ResponseParam<>(1, "NOT FOUND");
+		}
+
 	}
 	
 	@ResponseBody
@@ -167,29 +177,27 @@ public class DoctorController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(path="/changePwd/doctorId={doctorId}",method=RequestMethod.POST)
+	@RequestMapping(path="/changePwd/tel={tel}",method=RequestMethod.POST)
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json;charset=utf-8")
-	public ResponseParam<DoctorT> changePwd(@PathVariable("doctorId") int doctorId
-										,@RequestParam(value="code",required=false) String code
+	public ResponseParam<DoctorT> changePwd(@PathVariable("tel") String tel
 										,@RequestParam("pwd") String pwd) {
 		
 		
 		ResponseParam<DoctorT> resp=new ResponseParam<>();
-		
-		log.info("doctorId:"+doctorId+" code:"+code+" pwd:"+pwd);
-		
-		DoctorT doctor=doctorService.findById((int)doctorId);
-			
-			doctor.setPwd(pwd);
-		
-			doctorService.update(doctor);
 
-
-			List<DoctorT> dList=new ArrayList<>();
-				dList.add(doctor);
-			
-			resp.setData(dList);
+		List<DoctorT> doctorList=doctorService.findByTel(tel);	
+		
+			if(doctorList!=null && doctorList.size()>0) {
+				
+				DoctorT doctor=doctorList.get(0);
+				doctor.setPwd(pwd);
+				doctorService.update(doctor);
+				resp.setInfo("success");
+			}else {
+				resp.setCode(1);
+				resp.setInfo("Tel not found!");
+			}
 			
 		return resp;
 	}
@@ -240,7 +248,13 @@ public class DoctorController {
 	@ResponseBody
 	@RequestMapping(path="/bindAnyChat/doctorId={doctorId}&anychatId={anychatId}")
 	public ResponseParam<DoctorT> bindAnyChat(@PathVariable("doctorId") int doctorId,@PathVariable("anychatId") int anychatId){
-		ResponseParam<DoctorT> resp=new ResponseParam<>();
-			return null;
+		RDoctorAnychatT rda=anychatService.findByAnychatId(anychatId);
+		if(rda!=null) {
+			return new ResponseParam<>(1, "anychatId:"+rda.getAnychat_id()+" already bind for doctorId:"+rda.getDoctor_id());
+		}else {
+			anychatService.bindDoctorAndAnyChat(doctorId, anychatId);
+			return new ResponseParam<>();
+		}
+		
 	}
 }

@@ -3,11 +3,9 @@ package zdfs.service.impl;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import zdfs.dao.PatientTMapper;
 import zdfs.model.PatientT;
@@ -89,10 +87,10 @@ public class PatientService implements IPatientService {
 		PatientTExample example=new PatientTExample();
 			Criteria cri=example.createCriteria();
 					cri.andD_idEqualTo(doctorId);
-					if(patientName!=null && "".equals(patientName)) cri.andP_nameEqualTo(patientName);
-					//if(socialCard!=null && "".equals(socialCard)) 
-					//if(date!=null) cri.and
-		return null;
+					if(patientName!=null && !"".equals(patientName)) cri.andP_nameEqualTo(patientName);
+					if(socialCard!=null && !"".equals(socialCard))  cri.andP_social_cardEqualTo(socialCard);
+					//
+		return mapper.selectByExample(example);
 	}
 
 

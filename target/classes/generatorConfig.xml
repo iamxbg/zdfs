@@ -5,7 +5,7 @@
 	<classPathEntry location="src\main\resources\mysql-connector-java-5.1.42.jar"/>
  	
  	
-<!-- 
+ 
   <context id="zdfs_tables" >
     <jdbcConnection connectionURL="${mybatis.generator.jdbcURL}" 
     				driverClass="${mybatis.generator.jdbcDriver}" 
@@ -16,6 +16,7 @@
     <sqlMapGenerator targetPackage="zdfs.dao" targetProject="src/main/java" />
     <javaClientGenerator targetPackage="zdfs.dao" targetProject="src/main/java" type="XMLMAPPER" />
    
+   <!-- 
     <table schema="${mybatis.generator.schema}" tableName="doctor_t">
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
@@ -27,38 +28,41 @@
     <table schema="${mybatis.generator.schema}" tableName="department_t">
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
-    </table>
+    </table>-->
     <table schema="${mybatis.generator.schema}" tableName="diagnose_t">
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
     </table>
+    <!-- 
     <table schema="${mybatis.generator.schema}" tableName="hospital_t">
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
-    </table>
+    </table> -->
+    <!-- 
     <table schema="${mybatis.generator.schema}" tableName="r_doctor_anychat_t">
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
     </table>
+     -->
     
     <table schema="${mybatis.generator.schema}" tableName="patient_t">
     	<property name="useActualColumnNames" value="true"/>
     	<generatedKey column="ID" sqlStatement="mysql" identity="true"/>
     </table>
-
+<!-- 
 	<table schema="${mybatis.generator.schema}" tableName="meta_department_type_t">
 		<property name="useActualColumnNames" value="true"/>
     	<generatedKey column="ID" sqlStatement="mysql" identity="true"/>
 	</table>
-	
+	 
 	<table schema="${mybatis.generator.schema}" tableName="meta_doctor_type_t">
 		<property name="useActualColumnNames" value="true"/>
     	<generatedKey column="ID" sqlStatement="mysql" identity="true"/>
 	</table>
-
+	-->
   </context>
-   -->
-   
+  
+   <!-- 
   <context id="tf02_tables">
   	<jdbcConnection connectionURL="${mybatis.generator.tf02.jdbcURL}" 
     				driverClass="${mybatis.generator.tf02.jdbcDriver}" 
@@ -68,13 +72,13 @@
     <javaModelGenerator targetPackage="zdfs.tf02.model" targetProject="src/main/java" />
     <sqlMapGenerator targetPackage="zdfs.tf02.dao" targetProject="src/main/java" />
     <javaClientGenerator targetPackage="zdfs.tf02.dao" targetProject="src/main/java" type="XMLMAPPER" />
-    
+     
+     
      <table schema="${mybatis.generator.tf02.schema}" tableName="today_remind">
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
     </table>
-    <!-- 
-    <table schema="${mybatis.generator.tf02.schema}" tableName="bp_data">
+     <table schema="${mybatis.generator.tf02.schema}" tableName="bp_data">
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
     </table>
@@ -98,8 +102,8 @@
       <property name="useActualColumnNames" value='true'/>
       <generatedKey column="ID" sqlStatement="mysql" identity='ture'/>
     </table>
-     -->
     
-  </context>
+    
+  </context> -->
 </generatorConfiguration>
 

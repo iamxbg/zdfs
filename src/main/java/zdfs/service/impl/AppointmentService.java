@@ -3,11 +3,9 @@ package zdfs.service.impl;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import zdfs.dao.AppointmentTMapper;
 import zdfs.model.AppointmentT;
@@ -54,7 +52,9 @@ public class AppointmentService implements IAppointmentService {
 		// TODO Auto-generated method stub
 		AppointmentTExample example=new AppointmentTExample();
 			example.createCriteria().andDelflagEqualTo(false)
-									.andD_idEqualTo(doctorId);
+									.andD_idEqualTo(doctorId)
+									.andEmbark_directionEqualTo(false);
+									
 			example.setOrderByClause("appoint_date");
 		return mapper.selectByExample(example);
 	}

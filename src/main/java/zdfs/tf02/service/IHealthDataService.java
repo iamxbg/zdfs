@@ -34,4 +34,8 @@ public interface IHealthDataService {
 
 	public List<TodayRemind> findTodayRemindByMemberId(int memberId);
 	
+	public List<TodayRemind> findTodayRemindByMemberIdAndDate(int memberId,Date today);
+	
+	public List<TodayRemind> findTodayRemindByMemberIdAndDateRange(int memberId,Date startDate,Date endDate);
+	
 }
