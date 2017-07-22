@@ -29,8 +29,8 @@ public class PatientServiceTest  implements ICRUDServiceTest{
 		Integer p_age=42; 
 		Integer member_id=4233; 
 		Integer d_id=7;
-		PatientT t=new PatientT(p_name, p_sex, p_age, member_id, d_id);
-		service.add(t);
+		//PatientT t=new PatientT(p_name, p_sex, p_age, member_id, d_id);
+		//service.add(t);
 	}
 
 	@Override
