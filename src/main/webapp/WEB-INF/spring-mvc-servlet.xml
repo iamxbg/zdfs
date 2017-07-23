@@ -10,17 +10,10 @@
 
 	<mvc:annotation-driven  />
 	<context:component-scan base-package="zdfs.web" />
-	
-	<!-- 
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**"/>
-			<bean class="org.springframework.web.filter.CharacterEncodingFilter" p:forceEncoding="true" p:encoding="UTF-8"/>
-		</mvc:interceptor>
-	</mvc:interceptors>
-	 -->
-	 
+
 	<bean id='multipartResolver' class="org.springframework.web.multipart.support.StandardServletMultipartResolver" >
 		
 	</bean>
+	<mvc:resources mapping="/js/**" location="/js/"/>
+	<mvc:resources mapping="/image/**" location="/image/"/>
 </beans>

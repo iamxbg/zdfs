@@ -58,7 +58,7 @@ public class DepartmentController {
 		return new ResponseParam();
 	}
 	
-	@RequestMapping(path="/list?hostpitalId={hospitalId}",method=RequestMethod.GET)
+	@RequestMapping(path="/list/hospitalId={hospitalId}",method=RequestMethod.GET)
 	public ResponseParam<DepartmentT> findByHospistal(@PathVariable("hospitalId") int hospitalId){
 		ResponseParam<DepartmentT> resp=new ResponseParam<>();
 		List<DepartmentT> dList= dService.findByHospitalId(hospitalId);

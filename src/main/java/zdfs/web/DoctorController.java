@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -130,18 +133,18 @@ public class DoctorController {
 	
 	@ResponseBody
 	@RequestMapping(path="/register"
-		,method=RequestMethod.POST
-		,produces="application/json;charset=utf-8")
+		,method=RequestMethod.POST,consumes="multipart/form-data")
 	public ResponseParam<DoctorT> register(@RequestParam("tel") String tel
 								,@RequestParam("pwd") String pwd
 								,@RequestParam("mail") String mail
-			,@RequestParam("name") String name
-			,@RequestParam("birthday") String birthday_str
-			,@RequestParam("hospital_id") Integer hospital_id
-			,@RequestParam("department_id") Integer department_id
-			,@RequestParam("doctor_type_id") Integer doctor_type_id
-			,@RequestParam("good_at") String good_at
-			,@RequestParam(name="picture",required=false) MultipartFile picture
+								,@RequestParam("name") String name
+								,@RequestParam("birthday") String birthday_str
+								,@RequestParam("hospital_id") Integer hospital_id
+								,@RequestParam("department_id") Integer department_id
+								,@RequestParam("doctor_type_id") Integer doctor_type_id
+								,@RequestParam("good_at") String good_at
+								,@RequestParam(name="photo",required=false) MultipartFile picture,
+								HttpServletRequest req
 			){	
 		
 		ResponseParam<DoctorT> resp=new ResponseParam<>();
@@ -149,7 +152,7 @@ public class DoctorController {
 		// validate if message is complete.
 		log.info("@register");
 		
-		String photo="http://fakePhotoURL";
+		String photo="none";
 		boolean online_state=true;
 		boolean has_video=false;
 		/*
@@ -162,7 +165,7 @@ public class DoctorController {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return new ResponseParam<>(5,"Date format error!");
+			return new ResponseParam<>(5,"Birthday Date format error!");
 		}
 		
 
@@ -170,6 +173,9 @@ public class DoctorController {
 		DoctorT doctor=new DoctorT(name, pwd, mail, tel, photo, birthday, hospital_id, department_id, doctor_type_id, good_at, online_state, has_video);
 		
 		if(picture!=null){
+			if(picture.getSize()>4*1024*1024){
+				return new ResponseParam<>(6, "Picture is too big!");
+			}
 			String[] allowed={"image/x-png","image/png","image/pjpeg","image/jpeg","image/bmp"};
 			boolean isAllowed=false;
 			for(String a:allowed){
@@ -179,9 +185,21 @@ public class DoctorController {
 				}
 			}
 			if(isAllowed){
-				File pictureFile=new File("doctor_"+tel+"_"+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1));
+				
+				File dir=new File(req.getServletContext().getRealPath("/")+"image/");
+				if(!dir.exists()) dir.mkdirs();
+				
+				
+				File pictureFile=new File(req.getServletContext().getRealPath("/")+"/image/doctor_"+tel+"_"+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")));
+
+				
+				
 				try {
+					
+					log.info("save picture to:"+pictureFile.getAbsolutePath());
 					picture.transferTo(pictureFile);
+					doctor.setPhoto(pictureFile.getName());
+					doctorService.update(doctor);
 				} catch (IllegalStateException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -291,6 +309,60 @@ public class DoctorController {
 			anychatService.bindDoctorAndAnyChat(doctorId, anychatId);
 			return new ResponseParam<>();
 		}
-		
+	}
+	
+	@ResponseBody
+	@RequestMapping(path="/changePhoto/doctorId={doctorId}",consumes="multipart/form-data",method=RequestMethod.POST)
+	public ResponseParam<DoctorT> changePhoto(@PathVariable("doctorId") int doctorId,@RequestParam("photo") MultipartFile picture,HttpServletRequest req){
+		DoctorT doctor=doctorService.findById(doctorId);
+		if(doctor!=null){
+			if(picture!=null){
+				if(picture.getSize()>4*1024*1024){
+					return new ResponseParam<>(6, "Picture is too big!");
+				}
+				String[] allowed={"image/x-png","image/png","image/pjpeg","image/jpeg","image/bmp"};
+				boolean isAllowed=false;
+				for(String a:allowed){
+					if(a.equals(picture.getContentType())){
+						isAllowed=true;
+						break;
+					}
+				}
+				if(isAllowed){
+					
+					File dir=new File(req.getServletContext().getRealPath("/")+"image/");
+					if(!dir.exists()) dir.mkdirs();
+					
+					String tel=doctor.getTel();
+					
+					File pictureFile=new File(req.getServletContext().getRealPath("/")+"/image/doctor_"+tel+"_"+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")));
+			
+					try {
+						
+						picture.transferTo(pictureFile);
+
+						return new ResponseParam<>(0, "success");
+					} catch (IllegalStateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return new ResponseParam<>(4, e.getCause().getMessage());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return new ResponseParam<>(3, "File Writer error");
+					}
+				}else{
+					 ResponseParam<DoctorT> response=new ResponseParam<>();
+					 response.setCode(2);
+					 response.setInfo("picture type is not allowed :"+picture.getContentType());
+				}
+			}else{
+				return new ResponseParam<>(2, "Picture is Null");
+			}
+		}else{
+			return new ResponseParam<>(1, "doctor not found!");
+		}
+		return null;
+	
 	}
 }
