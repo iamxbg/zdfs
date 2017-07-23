@@ -1,5 +1,9 @@
 package zdfs.web;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,10 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import zdfs.model.DiagnoseT;
 import zdfs.model.DoctorT;
@@ -34,7 +37,7 @@ import zdfs.service.impl.DoctorService;
 import zdfs.web.param.ResponseParam;
 
 
-@RestController
+@Controller
 @RequestMapping(path="/doctor")
 public class DoctorController {
 	
@@ -48,7 +51,7 @@ public class DoctorController {
 	
 	
 	@ResponseBody
-	@Consumes("applicaton/x-www-form-urlencoded")
+	//@Consumes("applicaton/x-www-form-urlencoded")
 	@RequestMapping(path="/login",method=RequestMethod.POST)
 	public ResponseParam<DoctorT> login(@RequestParam("tel") String tel
 			,@RequestParam("pwd") String pwd){
@@ -97,9 +100,10 @@ public class DoctorController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(path="/update",method=RequestMethod.POST)
-	@Consumes("application/json;charset=utf-8")
-	@Produces("application/json;charset=utf-8")
+	@RequestMapping(path="/update"
+		,method=RequestMethod.POST
+		,produces={"application/json;charset=utf-8"}
+		,consumes={"application/json;charset=utf-8"})
 	public ResponseParam<DoctorT> update(@RequestBody DoctorT doctor){
 		
 		DoctorT old=doctorService.findById(doctor.getId());
@@ -125,9 +129,9 @@ public class DoctorController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(path="/register",method=RequestMethod.POST)
-	@Consumes("application/x-www-form-urlencoded")
-	@Produces("application/json;charset=utf-8")
+	@RequestMapping(path="/register"
+		,method=RequestMethod.POST
+		,produces="application/json;charset=utf-8")
 	public ResponseParam<DoctorT> register(@RequestParam("tel") String tel
 								,@RequestParam("pwd") String pwd
 								,@RequestParam("mail") String mail
@@ -137,6 +141,7 @@ public class DoctorController {
 			,@RequestParam("department_id") Integer department_id
 			,@RequestParam("doctor_type_id") Integer doctor_type_id
 			,@RequestParam("good_at") String good_at
+			,@RequestParam(name="picture",required=false) MultipartFile picture
 			){	
 		
 		ResponseParam<DoctorT> resp=new ResponseParam<>();
@@ -157,13 +162,43 @@ public class DoctorController {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return new ResponseParam<>(5,"Date format error!");
 		}
+		
+
 		
 		DoctorT doctor=new DoctorT(name, pwd, mail, tel, photo, birthday, hospital_id, department_id, doctor_type_id, good_at, online_state, has_video);
 		
-		int id=(int)doctorService.add(doctor);
+		if(picture!=null){
+			String[] allowed={"image/x-png","image/png","image/pjpeg","image/jpeg","image/bmp"};
+			boolean isAllowed=false;
+			for(String a:allowed){
+				if(a.equals(picture.getContentType())){
+					isAllowed=true;
+					break;
+				}
+			}
+			if(isAllowed){
+				File pictureFile=new File("doctor_"+tel+"_"+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1));
+				try {
+					picture.transferTo(pictureFile);
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return new ResponseParam<>(4, e.getCause().getMessage());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return new ResponseParam<>(3, "File Writer error");
+				}
+			}else{
+				 ResponseParam<DoctorT> response=new ResponseParam<>();
+				 response.setCode(2);
+				 response.setInfo("picture type is not allowed :"+picture.getContentType());
+			}
+		}
 		
-		log.info("generatedId:"+id);
+		doctorService.add(doctor);
 		
 		doctor.setPwd(null);
 
@@ -177,9 +212,10 @@ public class DoctorController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(path="/changePwd/tel={tel}",method=RequestMethod.POST)
-	@Consumes("application/x-www-form-urlencoded")
-	@Produces("application/json;charset=utf-8")
+	@RequestMapping(path="/changePwd/tel={tel}"
+		,method=RequestMethod.POST
+		,produces={"application/x-www-form-urlencoded"}
+		,consumes={"application/json;charset=utf-8"})
 	public ResponseParam<DoctorT> changePwd(@PathVariable("tel") String tel
 										,@RequestParam("pwd") String pwd) {
 		

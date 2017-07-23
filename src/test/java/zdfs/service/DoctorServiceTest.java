@@ -22,15 +22,15 @@ public class DoctorServiceTest  implements ICRUDServiceTest{
 	@Autowired
 	private DoctorService service;
 
-	@Ignore
+	//@Ignore
 	@Test
 	@Override
 	public void testAdd() {
 		// TODO Auto-generated method stub
-		String name="李熾明"; 
-		String pwd="hemomomowerwer"; 
+		String name="李大白"; 
+		String pwd="567"; 
 		String mail="helloworld@126.com"; 
-		String tel="9090910";
+		String tel="086-4537626";
 		String photo="http://fakeLocation.xmllsd"; 
 		Date birthday=null;
 		try {
@@ -39,9 +39,9 @@ public class DoctorServiceTest  implements ICRUDServiceTest{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Integer hospital_id=6;
-		Integer department_id=1;
-		Integer doctor_type_id=17; 
+		Integer hospital_id=73;
+		Integer department_id=45;
+		Integer doctor_type_id=41; 
 		String good_at="拔痰定喘";
 		Boolean online_state=false;
 		Boolean has_video=false;

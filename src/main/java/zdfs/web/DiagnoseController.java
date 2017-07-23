@@ -36,4 +36,10 @@ public class DiagnoseController {
 		return new ResponseParam<>(dataList);
 	}
 	
+	
+	@RequestMapping(path="/find/patientId={patientId}")
+	public ResponseParam<DiagnoseT> findByPatientId(@PathVariable("patientId") int patientId){
+		List<DiagnoseT> dataList=service.findByPatientId(patientId);
+			return new ResponseParam<>(dataList);
+	}
 }

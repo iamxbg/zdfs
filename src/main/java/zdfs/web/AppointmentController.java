@@ -32,6 +32,7 @@ public class AppointmentController {
 	public ResponseParam<AppointmentT> embark(@RequestBody AppointmentT appointment){
 		service.add(appointment);
 		return new ResponseParam<>();
+
 	}
 	
 
@@ -48,5 +49,6 @@ public class AppointmentController {
 			aList.add(appointment);
 		return new ResponseParam<>(aList);
 	}
+	
 
 }

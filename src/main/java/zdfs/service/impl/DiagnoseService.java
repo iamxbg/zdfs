@@ -1,6 +1,7 @@
 package zdfs.service.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,29 @@ public class DiagnoseService implements IDiagnoseService {
 									.andD_idEqualTo(doctorId);
 									
 									
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<DiagnoseT> findByDoctorIdAndDate(int doctorId, Date date) {
+		// TODO Auto-generated method stub
+		DiagnoseTExample example=new DiagnoseTExample();
+			example.createCriteria().andDelflagEqualTo(false)
+									.andD_idEqualTo(doctorId)
+									.andCreate_timeEqualTo(date);
+			example.setOrderByClause("create_time");
+			
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<DiagnoseT> findByPatientId(int patientId) {
+		// TODO Auto-generated method stub
+		
+		DiagnoseTExample example=new DiagnoseTExample();
+				example.createCriteria().andDelflagEqualTo(false)
+										.andP_idEqualTo(patientId);			
+				example.setOrderByClause("create_time desc");						
 		return mapper.selectByExample(example);
 	}
 	

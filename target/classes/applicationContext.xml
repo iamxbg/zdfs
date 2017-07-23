@@ -63,6 +63,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" 
 		p:dataSource-ref="dataSource" />
 	 
+	 
 	 <bean id='tf02_sqlSessionFactory'  class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="tf02_dataSource" />
 	 
 	

@@ -1,17 +1,13 @@
 package zdfs.web;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.messaging.converter.ContentTypeResolver;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -19,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
 
@@ -40,6 +35,7 @@ public class DoctorControllerTest {
 		
 	}
 	
+	//@Ignore
 	@Test
 	public void testRegister() throws Exception {
 		/*
@@ -83,4 +79,21 @@ public class DoctorControllerTest {
 				).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 	}
+	
+	@Ignore
+	@Test
+	public void testLogin() throws Exception{
+		
+		String tel="9090910";
+		String pwd="hemomomowerwer";
+		
+		mockMvc.perform(post("/doctor/login")
+						.param("tel", tel)
+						.param("pwd",pwd)
+				).andExpect(status().isOk());
+		
+	}
+	
+	
+	
 }
