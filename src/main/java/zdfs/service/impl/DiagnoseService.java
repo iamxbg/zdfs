@@ -11,6 +11,7 @@ import zdfs.dao.DiagnoseTMapper;
 import zdfs.model.DiagnoseT;
 import zdfs.model.DiagnoseTExample;
 import zdfs.service.IDiagnoseService;
+import zdfs.util.DateUtil;
 
 @Service
 @Transactional
@@ -62,7 +63,9 @@ public class DiagnoseService implements IDiagnoseService {
 		DiagnoseTExample example=new DiagnoseTExample();
 			example.createCriteria().andDelflagEqualTo(false)
 									.andD_idEqualTo(doctorId)
-									.andCreate_timeEqualTo(date);
+									.andCreate_timeGreaterThan(DateUtil.getStartDateOfDate(date))
+									.andCreate_timeLessThan(DateUtil.getDateEndDateOfDate(date));
+			
 			example.setOrderByClause("create_time");
 			
 		return mapper.selectByExample(example);
@@ -76,6 +79,20 @@ public class DiagnoseService implements IDiagnoseService {
 				example.createCriteria().andDelflagEqualTo(false)
 										.andP_idEqualTo(patientId);			
 				example.setOrderByClause("create_time desc");						
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<DiagnoseT> findByPatientIdAndDate(int patientId, Date date) {
+		// TODO Auto-generated method stub
+		DiagnoseTExample example=new DiagnoseTExample();
+				example.createCriteria().andDelflagEqualTo(false)
+									.andP_idEqualTo(patientId)
+									.andCreate_timeGreaterThan(DateUtil.getStartDateOfDate(date))
+									.andCreate_timeLessThan(DateUtil.getDateEndDateOfDate(date));
+				
+				example.setOrderByClause("create_time desc");
+				
 		return mapper.selectByExample(example);
 	}
 	

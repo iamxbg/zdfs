@@ -58,9 +58,7 @@ public class DoctorController {
 	@RequestMapping(path="/login",method=RequestMethod.POST)
 	public ResponseParam<DoctorT> login(@RequestParam("tel") String tel
 			,@RequestParam("pwd") String pwd){
-		
-		log.info("username:"+tel);
-		log.info("password:"+pwd);
+
 		
 		ResponseParam<DoctorT> resp=new ResponseParam<>();
 		
@@ -68,7 +66,6 @@ public class DoctorController {
 		
 		Map<String, Object> result=new HashMap<>();
 		if(dList.size()>0){
-			
 			dList.get(0).setPwd("");;
 			resp.setData(dList);
 			
@@ -250,7 +247,7 @@ public class DoctorController {
 				resp.setInfo("success");
 			}else {
 				resp.setCode(1);
-				resp.setInfo("Tel not found!");
+				resp.setInfo("Doctor not found!");
 			}
 			
 		return resp;

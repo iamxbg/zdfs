@@ -14,5 +14,7 @@ public interface IDiagnoseService extends CRUDService<DiagnoseT>{
 	
 	public List<DiagnoseT> findByPatientId(int patientId);
 	
+	public List<DiagnoseT> findByPatientIdAndDate(int patientId,Date date);
+	
 	
 }
